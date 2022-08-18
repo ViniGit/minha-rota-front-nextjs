@@ -2,7 +2,6 @@ import type { AppProps } from 'next/app'
 import { AuthProvider } from '../contexts/AuthContext'
 
 import 'react-toastify/dist/ReactToastify.css'
-
 import '../styles/global.scss'
 
 function MyApp({ Component, pageProps }: AppProps) {

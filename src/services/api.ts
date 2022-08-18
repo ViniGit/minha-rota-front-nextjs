@@ -27,6 +27,7 @@ export function setupApiClient(ctx = undefined) {
     }, (error: AxiosError) => {
         if (error.response?.status === 401) {
             const message = error.response.data
+            //@ts-ignore
             if (message?.message === 'Invalid token!') {
 
                 cookies = parseCookies(ctx)

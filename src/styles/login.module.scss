@@ -1,11 +1,11 @@
     .logon-container {
-        width: 100%;
-        max-width: 1120px;
-        height: 100vh;
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        // width: 100%;
+        // max-width: 1120px;
+        // height: 100vh;
+        // margin: auto;
+        // align-items: center;
+        // justify-content: center;
+        display: relative;
     }
     
     .logon-container section.form {
@@ -31,8 +31,17 @@
     }
     
     .login {
+        max-width: 420px;
         background-color: #d3d3d3;
         padding: 40px;
         box-shadow: 0 0 200px rgb(0 0 0 / 10%);
         border-radius: 8px;
+        margin: 0 auto;
+        margin-top: 210px;
+    }
+    
+    .error-label {
+        font-size: 13px;
+        color: red;
+        margin: 5px;
     }

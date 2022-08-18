@@ -8,7 +8,7 @@ export function withSSRAuth(fn: GetServerSideProps) {
         if (!cookies['minha-rota-token']) {
             return {
                 redirect: {
-                    destination: '/login',
+                    destination: '/',
                     permanent: false
                 }
             }

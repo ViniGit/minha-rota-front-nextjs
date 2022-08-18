@@ -7,7 +7,7 @@ export function withSSRGuest(fn: GetServerSideProps) {
         if (cookies['minha-rota-token']) {
             return {
                 redirect: {
-                    destination: '/dashboard',
+                    destination: '/painel',
                     permanent: false
                 }
             }

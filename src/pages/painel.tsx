@@ -7,10 +7,12 @@ import { Authcontext, signOut } from '../contexts/AuthContext'
 import { withSSRAuth } from '../utils/withSSRAuth'
 
 
-import style from '../styles/dashboard.module.scss'
+import style from '../styles/painel.module.scss'
 import { setupApiClient } from '../services/api'
+import AdminDashboard from './admin/dashboard'
+import ProviderDashboard from './service-provider/dashboard'
 
-const Dashboard: NextPage = () => {
+const Painel: NextPage = () => {
 
     const { user } = useContext(Authcontext)
 
@@ -21,18 +23,26 @@ const Dashboard: NextPage = () => {
     return (
         <>
             <Head>
-                <title>Minha Rota</title>
+                <title>Minha Rota | Painel</title>
             </Head>
             <div className={style['profile-container']}>
                 <header>
                     <span> Bem-vindo(a), {user?.email} </span>
 
-                    <a className={"button"} href='/incidents/new'> Cadastrar novo usuário </a>
+                    {user?.isAdmin && <a className={"button"} href='/sign-up'> Cadastrar novo usuário </a>}
+
+                    {!user?.isAdmin && <a className={"button"} href='/'> Visualizar dados do usuário </a>}
+
+
                     <button onClick={handleLogout} type="button">
                         <FiPower size={18} color="e02041" />
                     </button>
                 </header>
-                <h1> Dashboard </h1>
+
+                {user?.isAdmin && <AdminDashboard />}
+
+
+                {!user?.isAdmin && <ProviderDashboard />}
                 {/* <ul>
                 {incidents.map(incident => (
                     <li key={incident.id}>
@@ -56,11 +66,11 @@ const Dashboard: NextPage = () => {
     )
 }
 
-export default Dashboard
+export default Painel
 
 
 export const getServerSideProps = withSSRAuth(async (ctx) => {
-
+    // @ts-ignore
     const apiClient = setupApiClient(ctx)
     const response = await apiClient.get('/me')
 

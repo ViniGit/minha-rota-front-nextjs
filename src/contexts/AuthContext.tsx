@@ -8,6 +8,9 @@ import Router from "next/router";
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import { HeadersDefaults } from 'axios'
 import { api } from '../services/apiClient';
+import { ToastifySuccess } from '../toastify/toastify-succes';
+import { ToastifyWarn } from '../toastify/toastify-warn';
+import { ToastifyError } from '../toastify/toastify-error';
 
 type User = {
     email: string,
@@ -41,7 +44,7 @@ export function signOut() {
     destroyCookie(undefined, 'minha-rota-token')
     destroyCookie(undefined, 'minha-rota-refresh-token')
 
-    Router.push('/login')
+    Router.push('/')
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -67,35 +70,45 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     async function signIn({ email, password }: SignInCredentials) {
         try {
-            const response = await api.post('/sessions', {
+            await api.post('/sessions', {
                 email,
                 password
+            }).then(response => {
+                if (response.status === 200) {
+
+                    if (response.data) {
+                        const { token, refresh_token, isAdmin } = response.data
+                        const { name } = response.data.user
+
+                        setCookie(undefined, 'minha-rota-token', token, {
+                            maxAge: 60 * 60 * 24 * 30,
+                            path: '/'
+                        })
+                        setCookie(undefined, 'minha-rota-refresh-token', refresh_token, {
+                            maxAge: 60 * 60 * 24 * 30,
+                            path: '/'
+                        })
+
+                        setUser({
+                            email,
+                            isAdmin,
+                            name
+                        })
+
+                        api.defaults.headers = { Authorization: `Bearer ${token}` } as CommonHeaderProperties
+
+                    }
+                    ToastifySuccess('Login realizado!')
+                    setTimeout(() => {
+                        Router.push('/painel')
+                    }, 4000)
+                }
+            }).catch((err) => {
+                if (err.response.data.message == 'Email or password incorrect' && err.response.data.statusCode == 400) {
+                    return ToastifyWarn('Email ou senha inválidos!')
+                }
+                return ToastifyError('Erro interno do servidor')
             })
-
-            if (response.data) {
-                const { token, refresh_token, isAdmin } = response.data
-                const { name } = response.data.user
-
-                setCookie(undefined, 'minha-rota-token', token, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/'
-                })
-                setCookie(undefined, 'minha-rota-refresh-token', refresh_token, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/'
-                })
-
-                setUser({
-                    email,
-                    isAdmin,
-                    name
-                })
-
-
-                api.defaults.headers = { Authorization: `Bearer ${token}` } as CommonHeaderProperties
-
-                Router.push('/dashboard')
-            }
 
         } catch (error) {
             console.log(error)
