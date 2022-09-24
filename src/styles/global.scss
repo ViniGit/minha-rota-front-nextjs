@@ -104,3 +104,10 @@ form textarea {
 .back-link:hover {
     opacity: 0.8;
 }
+
+div {
+    .main-content {
+        margin-left: 15rem;
+        width: calc(100% - 15rem);
+    }
+}

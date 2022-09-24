@@ -8,10 +8,19 @@ import {
     MdOutlineSettings,
     MdOutlineLogout,
 } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
-import { FaRegComments } from "react-icons/fa";
-import { BiMessageSquareDots } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg"
+import { FaRegComments } from "react-icons/fa"
+import { BiMessageSquareDots } from "react-icons/bi"
+import { signOut } from "../contexts/AuthContext";
+import Link from "next/link";
+
+
 function MyApp() {
+
+    function handleLogout() {
+        signOut()
+    }
+
     return (
         <div>
             <Disclosure as="nav">
@@ -29,15 +38,19 @@ function MyApp() {
                         <div className=" my-4 border-b border-gray-100 pb-4">
                             <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                 <MdOutlineSpaceDashboard className="text-2xl text-white group-hover:text-red-500 " />
-                                <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
-                                    Dashboard
-                                </h3>
+                                <Link href="/painel/dashboard">
+                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                        Dashboard
+                                    </h3>
+                                </Link>
                             </div>
                             <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                 <CgProfile className="text-2xl text-white group-hover:text-red-500 " />
-                                <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
-                                    Perfil
-                                </h3>
+                                <Link href="/painel/expenses">
+                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                        Despesas
+                                    </h3>
+                                </Link>
                             </div>
                             {/* <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                 <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " />
@@ -83,9 +96,11 @@ function MyApp() {
                         <div className=" my-4">
                             <div className="flex mb-2 justify-start items-center gap-4 pl-5 border border-gray-200  hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                 <MdOutlineLogout className="text-2xl text-white group-hover:text-red-500 " />
-                                <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
-                                    Logout
-                                </h3>
+                                <button onClick={handleLogout} type="button">
+                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                        Logout
+                                    </h3>
+                                </button>
                             </div>
                         </div>
                     </div>

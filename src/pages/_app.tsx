@@ -3,10 +3,30 @@ import { AuthProvider } from '../contexts/AuthContext'
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/global.scss'
 
-function MyApp({ Component, pageProps }: AppProps) {
+type Props = {
+  title: string
+  children:
+  | JSX.Element
+  | JSX.Element[]
+  | string
+  | string[]
+}
+
+
+type AppLayoutProps = {
+  Component: any
+  pageProps: any
+}
+
+function MyApp({ Component, pageProps }: AppLayoutProps) {
+
+  const Layout = Component.layout || (({ children }: Props) => <>{children}</>)
+
   return (
     <AuthProvider>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </AuthProvider>
   )
 }

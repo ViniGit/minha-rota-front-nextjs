@@ -35,28 +35,6 @@ export default function Login() {
       <Head>
         <title>Login | Minha Rota</title>
       </Head>
-      {/* <div className={styles['logon-container']}>
-        <div className={styles.login}>
-          <section className={styles.form}>
-            <form onSubmit={formik.handleSubmit}>
-              <h2> Seja bem vindo!</h2>
-              <input type="email" id='email' placeholder="E-mail" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} />
-              {formik.touched.email && formik.errors.email ? <p className={styles['error-label']}>{formik.errors.email}</p> : null}
-
-              <input type="password" id='password' placeholder="Senha" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} />
-              {formik.touched.password && formik.errors.password ? <p className={styles['error-label']}>{formik.errors.password}</p> : null}
-
-              <button className="button" type="submit"> Entrar </button>
-              <a className="back-link" href="/sign-up">
-                <FiLogIn size={16} color="#e02041" />
-                Não tenho cadastro
-              </a>
-            </form>
-          </section>
-        </div>
-        <ToastContainer />
-      </div> */}
-
       <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">
         <div className="container mx-auto">
           <div className="max-w-md mx-auto my-10">
