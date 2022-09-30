@@ -27,7 +27,7 @@ export default function Painel({ children }: Props) {
     return (
         <>
             <NavBar />
-            <div className="main-content w-screen h-screen ">
+            <div className="mt-16 sm:ml-0 lg:ml-60 flex content-center">
                 {children || <AdminDashboard />}
             </div>
             <SideBarMenu />

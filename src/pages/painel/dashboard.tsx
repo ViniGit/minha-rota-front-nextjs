@@ -3,7 +3,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import Admin from "."
-import CardDashboard from '../../components/CardDashboard'
+import CardExpenses from '../../components/cards/CardExpenses'
+import CardRoutes from '../../components/cards/CardRoutes'
+import CardVehicles from '../../components/cards/CardVehicles'
 
 export default function AdminDashboard() {
 
@@ -12,20 +14,25 @@ export default function AdminDashboard() {
             <Head>
                 <title>Dashboard | Minha Rota</title>
             </Head>
-            <div className='p-5 flex'>
+            <div className='p-8  xl:flex w-full '>
                 <div className="flex-auto">
                     <div className="w-full mb-12 px-5">
-                        < CardDashboard />
+                        < CardExpenses />
+                    </div>
+                </div>
+                <div className="flex-auto ">
+                    <div className="w-full mb-12 px-5">
+                        < CardRoutes />
                     </div>
                 </div>
                 <div className="flex-auto">
                     <div className="w-full mb-12 px-5">
-                        < CardDashboard />
+                        < CardVehicles />
                     </div>
                 </div>
                 <div className="flex-auto">
                     <div className="w-full mb-12 px-5">
-                        < CardDashboard />
+                        < CardVehicles />
                     </div>
                 </div>
             </div>
