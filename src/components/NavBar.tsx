@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { Authcontext, signOut } from "../contexts/AuthContext"
 import { FiUser } from 'react-icons/fi'
 import { FiChevronDown } from 'react-icons/fi'
+import Link from "next/link"
 
 
 function NavBar() {
@@ -15,11 +16,15 @@ function NavBar() {
         setshow(!show)
     }
 
+    function closeDropDown() {
+        setshow(false)
+    }
 
     function handleLogout() {
         handleDropDown()
         signOut()
     }
+
     return (
         <nav className="bg-gray-900 p-2 mt-0 fixed w-full z-10 top-0 h-16	">
         <div className="container mx-auto flex flex-wrap items-center">
@@ -51,7 +56,7 @@ function NavBar() {
                                 </button>
                             </div>
                             {show ? <div className="absolute right-0 z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex={-1}>
-                                <a className="block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer" role="menuitem" tabIndex={-1} id="user-menu-item-1">Configurações</a>
+                                <Link href="/painel/settings" role="menuitem" tabIndex={-1} id="user-menu-item-1">Configurações</Link>
                                 <a onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer" role="menuitem" tabIndex={-1} id="user-menu-item-2">Sair</a>
                             </div> : null}
 
