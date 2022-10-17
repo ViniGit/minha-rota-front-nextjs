@@ -4,6 +4,7 @@ export default interface UserModel {
     password: string
     cpf: string
     cell: string
-    birth_date: string
+    birth_date: string,
+    id: string
 }
 

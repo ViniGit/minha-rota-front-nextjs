@@ -62,11 +62,8 @@ const SignUp: NextPage = () => {
 
             try {
                 api.post('/users', data).then(response => {
-
                     if (response.status === 201) {
-
                         ToastifySuccess('Cadastro realizado!')
-
                         setTimeout(() => {
                             Router.push('/')
                         }, 4000)
@@ -103,18 +100,18 @@ const SignUp: NextPage = () => {
 
                         <div className="m-4">
                             <input id="name" placeholder="Nome" type="text" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
-                            {formik.touched.name && formik.errors.name ? <p className={styles['error-label']}>{formik.errors.name}</p> : null}
+                            {formik.touched.name && formik.errors.name ? <p className='text-red-500 text-xs mt-2'>{formik.errors.name}</p> : null}
                         </div>
 
                         <div className="m-4">
                             <input id="email" type="email" placeholder="Email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
-                            {formik.touched.email && formik.errors.email ? <p className={styles['error-label']}>{formik.errors.email}</p> : null}
+                            {formik.touched.email && formik.errors.email ? <p className='text-red-500 text-xs mt-2'>{formik.errors.email}</p> : null}
                         </div>
 
 
                         <div className="m-4">
                             <input id="cpf" type="text" maxLength={18} placeholder="CPF/CNPJ" value={mask(formik.values.cpf)} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
-                            {formik.touched.cpf && formik.errors.cpf ? <p className={styles['error-label']}>{formik.errors.cpf}</p> : null}
+                            {formik.touched.cpf && formik.errors.cpf ? <p className='text-red-500 text-xs mt-2'>{formik.errors.cpf}</p> : null}
                         </div>
 
                         <div className="m-4">
@@ -128,7 +125,7 @@ const SignUp: NextPage = () => {
                                 value={formik.values.cell}
                                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                             />
-                            {formik.touched.cell && formik.errors.cell ? <p className={styles['error-label']}>{formik.errors.cell}</p> : null}
+                            {formik.touched.cell && formik.errors.cell ? <p className='text-red-500 text-xs mt-2'>{formik.errors.cell}</p> : null}
                         </div>
 
                         <div className="m-4">
@@ -142,18 +139,18 @@ const SignUp: NextPage = () => {
                                 value={formik.values.date}
                                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                             />
-                            {formik.touched.date && formik.errors.date ? <p className={styles['error-label']}>{formik.errors.date}</p> : null}
+                            {formik.touched.date && formik.errors.date ? <p className='text-red-500 text-xs mt-2'>{formik.errors.date}</p> : null}
                         </div>
 
 
                         <div className="m-4">
                             <input type="password" id="password" placeholder="Senha" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
-                            {formik.touched.password && formik.errors.password ? <p className={styles['error-label']}>{formik.errors.password}</p> : null}
+                            {formik.touched.password && formik.errors.password ? <p className='text-red-500 text-xs mt-2'>{formik.errors.password}</p> : null}
                         </div>
 
                         <div className="m-4">
                             <input type="password" id="confirmPassword" placeholder="Confirmar senha" value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
-                            {formik.touched.confirmPassword && formik.errors.confirmPassword ? <p className={styles['error-label']}>{formik.errors.confirmPassword}</p> : null}
+                            {formik.touched.confirmPassword && formik.errors.confirmPassword ? <p className='text-red-500 text-xs mt-2'>{formik.errors.confirmPassword}</p> : null}
                         </div>
 
                         <div className="m-4 ">

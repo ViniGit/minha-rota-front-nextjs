@@ -13,28 +13,127 @@ import axios from 'axios'
 import { api } from '../../services/apiClient'
 import UserModel from '../../models/UserModel'
 
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { ToastifySuccess } from '../../toastify/toastify-succes'
+import Router from 'next/router'
+import { ToastifyWarn } from '../../toastify/toastify-warn'
+import { ToastifyError } from '../../toastify/toastify-error'
+import { Value } from 'sass'
+import { formatData } from '../../utils/DataToYYYYMMDD'
+import { ToastContainer } from 'react-toastify'
+import ReactInputMask from 'react-input-mask'
+
+import InputMask from "react-input-mask"
+
+import { mask, removeMask } from "../../utils/CpfCnpjMask"
+import DatePicker from "react-datepicker"
+
+import "react-datepicker/dist/react-datepicker.css"
+
+import { registerLocale, setDefaultLocale } from "react-datepicker"
+import ptBR from 'date-fns/locale/pt-BR'
+registerLocale('ptBR', ptBR)
+
+import MaskedInput from 'react-maskedinput';
 
 export default function Settings() {
 
     const { user } = useContext(Authcontext)
 
     const [activeUser, setActiveUser] = useState<UserModel>()
-    const [toggle, setToggle] = useState<Boolean>()
+    const [toggle, setToggle] = useState<Boolean>(false)
 
+    const [startDate, setStartDate] = useState(new Date())
     function handleToggle() {
         setToggle(!toggle)
     }
 
+    // const getUser = async () => {
+    //     const response = await api.get(`/users/email?email=${user?.email}`)
+    //     console.log(`user: ${response.data}`)
+    //     setActiveUser(response.data)
+    // };
+
+    // useEffect(() => {
+    //     api.get(`/users/email?email=${user?.email}`).then(async (response) => {
+    //         console.log(response)
+    //         const { name, email, password, cpf, cell, birth_date } = response.data
+    //         setActiveUser({ name, email, password, cpf, cell, birth_date })
+    //     }).catch((err) => {
+    //         console.log(err)
+    //     })
+
+    // }, [])
+
     useEffect(() => {
-        console.log(user?.email)
-        api.get(`/users/email?email=${user?.email}`).then(response => {
-            console.log(response)
-            const { name, email, password, cpf, cell, birth_date } = response.data
-            setActiveUser({ name, email, password, cpf, cell, birth_date })
-        }).catch((err) => {
-            console.log(err)
-        })
+        const fetchData = async () => {
+            const response = await api.get(`/users/email?email=${user?.email}`)
+            console.log('response')
+            console.log(response.data)
+            const { name, email, password, cpf, cell, birth_date, id } = await response.data
+            setActiveUser({ name, email, password, cpf, cell, birth_date, id })
+        }
+        fetchData()
+            .catch(console.error)
     }, [])
+
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            name: activeUser?.name || '',
+            email: activeUser?.email || '',
+            password: '',
+            cpf: activeUser?.cpf || '',
+            cell: activeUser?.cell || '',
+            birth_date: activeUser?.birth_date || '',
+            confirmPassword: '',
+        },
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .max(20, 'Nome deve ter no máximo 20 caracteres.')
+                .min(5, 'Nome deve ter no minimo 5 caracteres.')
+                .required('Campo Obrigatorio'),
+            cell: Yup.string()
+                .required('Campo Obrigatorio'),
+            email: Yup.string().email('Enrereço de e-mail inválido!').required('Campo Obrigatorio'),
+            birth_date: Yup.string().required('Campo Obrigatorio'),
+            cpf: Yup.string().required('Campo Obrigatorio'),
+            password: Yup.string(),
+            confirmPassword: Yup.string()
+                .oneOf([Yup.ref('password'), null], 'As senhas não se correspondem!')
+        }),
+        onSubmit: (values) => {
+            let data = {
+                name: values.name,
+                email: values.email,
+                cell: values.cell,
+                cpf: removeMask(values.cpf),
+                birth_date: values.birth_date,
+                changePassword: toggle,
+                password: values.password
+            }
+
+            try {
+                api.put(`/users/${activeUser?.id}`, data).then(response => {
+                    console.log(response)
+                    if (response.status === 201) {
+                        ToastifySuccess('Usuário atualizado!')
+                        setTimeout(() => {
+                            Router.push('/painel')
+                        }, 4000)
+                    }
+                }).catch((err) => {
+                    return ToastifyError('Erro interno do servidor')
+                })
+            } catch (error) {
+                console.warn(error)
+            }
+        },
+    })
+
+
 
     return (
         < >
@@ -55,7 +154,7 @@ export default function Settings() {
                         </div>
                     </div>
                     <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                        <form>
+                        <form onSubmit={formik.handleSubmit}>
                             <h6 className="text-blueGray-400 text-base mt-3 mb-6 font-bold  text-white">
                                 Informações do usuário:
                             </h6>
@@ -69,10 +168,15 @@ export default function Settings() {
                                             Nome
                                         </label>
                                         <input
+                                            id="name"
                                             type="text"
                                             className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                            defaultValue={activeUser?.name}
+                                            value={formik.values.name}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                         />
+                                        {formik.touched.name && formik.errors.name ? <p className='text-red-500 text-xs mt-2'>{formik.errors.name}</p> : null}
+
                                     </div>
                                 </div>
                                 {/* <div className="w-full lg:w-6/12 px-4">
@@ -98,11 +202,18 @@ export default function Settings() {
                                         >
                                             CPF/CNPJ
                                         </label>
-                                        <input
+                                        {/* <input
+                                            id="cpf"
                                             type="text"
                                             className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                            defaultValue={activeUser?.cpf}
-                                        />
+                                            defaultValue={formik.values.cpf}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        /> */}
+                                        <input id="cpf" type="text" maxLength={18} placeholder="CPF/CNPJ" value={mask(formik.values.cpf)} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+
+                                        {formik.touched.cpf && formik.errors.cpf ? <p className='text-red-500 text-xs mt-2'>{formik.errors.cpf}</p> : null}
+
                                     </div>
                                 </div>
                                 <div className="w-full lg:w-6/12 px-4">
@@ -113,11 +224,20 @@ export default function Settings() {
                                         >
                                             Celular
                                         </label>
-                                        <input
+
+                                        <InputMask
+                                            id='cell'
+                                            mask="(99) 99999-9999"
+                                            placeholder="Celular"
                                             type="text"
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleChange}
+                                            value={formik.values.cell}
                                             className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                            defaultValue={activeUser?.cell}
                                         />
+
+                                        {formik.touched.cell && formik.errors.cell ? <p className='text-red-500 text-xs mt-2'>{formik.errors.cell}</p> : null}
+
                                     </div>
                                 </div>
                                 <div className="w-full lg:w-6/12 px-4">
@@ -128,11 +248,38 @@ export default function Settings() {
                                         >
                                             Data de Nascimento
                                         </label>
-                                        <input
+
+                                        {/* <ReactInputMask
+                                            id='date'
+                                            type="text"
+                                            mask="99/99/9999"
+                                            placeholder="Data de Nascimento"
+                                            onChange={formik.handleChange}
+                                            value={formik.values.birth_date}
+                                            onBlur={formik.handleBlur}
+                                            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                                        /> */}
+                                        {/* <input
+                                            id="birth_date"
                                             type="text"
                                             className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                            defaultValue={activeUser?.birth_date}
+                                            defaultValue={formik.values.birth_date}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        /> */}
+
+                                        <DatePicker
+                                            className='w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
+                                            locale={ptBR}
+                                            selected={startDate}
+                                            onChange={(date: Date) => setStartDate(date)}
+                                            dateFormat="dd/MM/yyyy"
+                                            customInput={
+                                                <MaskedInput mask="11/11/1111" placeholder="dd/mm/yyyy" />
+                                            }
                                         />
+
+                                        {formik.touched.birth_date && formik.errors.birth_date ? <p className='text-red-500 text-xs mt-2'>{formik.errors.birth_date}</p> : null}
                                     </div>
                                 </div>
 
@@ -171,10 +318,17 @@ export default function Settings() {
                                                 Senha:
                                             </label>
                                             <input
-                                                type="text"
+                                                //@ts-ignore
+                                                required={toggle}
+                                                id="password"
+                                                type="password"
                                                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                                defaultValue={activeUser?.cell}
+                                                value={formik.values.password}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
                                             />
+                                            {formik.touched.password && formik.errors.password ? <p className='text-red-500 text-xs mt-2'>{formik.errors.password}</p> : null}
+
                                         </div>
                                     </div>
                                     <div className="w-full lg:w-6/12 px-4">
@@ -186,10 +340,17 @@ export default function Settings() {
                                                 Confirmação de senha:
                                             </label>
                                             <input
-                                                type="text"
+                                                //@ts-ignore
+                                                required={toggle}
+                                                id="confirmPassword"
+                                                type="password"
                                                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                                defaultValue={activeUser?.cell}
+                                                value={formik.values.confirmPassword}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
                                             />
+                                            {formik.touched.confirmPassword && formik.errors.confirmPassword ? <p className='text-red-500 text-xs mt-2'>{formik.errors.confirmPassword}</p> : null}
+
                                         </div>
                                     </div>
                                 </div>
@@ -197,78 +358,12 @@ export default function Settings() {
                                 : null}
 
                             <div className="m-4">
-                                <button type="submit" className="w-full px-3 py-4 text-white bg-red-500 rounded-md focus:bg-red-600 focus:outline-none">Entrar</button>
+                                <button type="submit" className="w-full px-3 py-4 text-white bg-red-500 rounded-md focus:bg-red-600 focus:outline-none">Atualizar</button>
                             </div>
-                            {/* <hr className="mt-6 border-b-1 border-blueGray-300" /> */}
-
-                            {/* <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold ">
-                                Contact Information
-                            </h6>
-                            <div className="flex flex-wrap">
-                                <div className="w-full lg:w-12/12 px-4">
-                                    <div className="relative w-full mb-3">
-                                        <label
-                                            className="block  text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="grid-password"
-                                        >
-                                            Address
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="w-full lg:w-4/12 px-4">
-                                    <div className="relative w-full mb-3">
-                                        <label
-                                            className="block  text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="grid-password"
-                                        >
-                                            City
-                                        </label>
-                                        <input
-                                            type="email"
-                                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            defaultValue="New York"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="w-full lg:w-4/12 px-4">
-                                    <div className="relative w-full mb-3">
-                                        <label
-                                            className="block  text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="grid-password"
-                                        >
-                                            Country
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            defaultValue="United States"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="w-full lg:w-4/12 px-4">
-                                    <div className="relative w-full mb-3">
-                                        <label
-                                            className="block  text-blueGray-600 text-xs font-bold mb-2"
-                                            htmlFor="grid-password"
-                                        >
-                                            Postal Code
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            defaultValue="Postal Code"
-                                        />
-                                    </div>
-                                </div>
-                            </div> */}
-
                         </form>
                     </div>
+                    <ToastContainer />
+
                 </div>
 
             </div>

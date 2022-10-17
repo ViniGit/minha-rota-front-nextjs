@@ -4,17 +4,19 @@ import Head from 'next/head'
 
 import Admin from "."
 
-export default function AdminExpenses() {
+export default function Expense() {
 
     return (
         < >
             <Head>
                 <title>Despesas | Minha Rota</title>
             </Head>
-            <h1>Admin expenses.</h1>
+            <div className="p-8  xl:flex w-full ">
+                <h1>Despesas!!!!!</h1>
+            </div>
         </>
     )
 }
 
-AdminExpenses.layout = Admin
+Expense.layout = Admin
 

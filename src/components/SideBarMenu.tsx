@@ -38,38 +38,44 @@ function MyApp() {
                             </h1>
                         </Link>
                         <div className=" my-4 border-b border-gray-100 pb-4">
-                            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                <MdOutlineSpaceDashboard className="text-2xl text-white group-hover:text-red-500 " />
-                                <Link href="/painel/dashboard">
+                            <Link href="/painel/dashboard">
+                                <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                                    <MdOutlineSpaceDashboard className="text-2xl text-white group-hover:text-red-500 " />
                                     <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
                                         Dashboard
                                     </h3>
-                                </Link>
-                            </div>
-                            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                <GiTakeMyMoney className="text-2xl text-white group-hover:text-red-500 " />
-                                <Link href="/painel/expenses">
-                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
-                                        Despesas
-                                    </h3>
-                                </Link>
-                            </div>
-                            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                <GiPathDistance className="text-2xl text-white group-hover:text-red-500 " />
-                                <Link href="/painel/expenses">
+                                </div>
+                            </Link>
+
+                            <Link href="/painel/route">
+                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                                    <GiPathDistance className="text-2xl text-white group-hover:text-red-500 " />
                                     <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
                                         Trajetos
                                     </h3>
-                                </Link>
-                            </div>
-                            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                <GiCityCar className="text-2xl text-white group-hover:text-red-500 " />
-                                <Link href="/painel/expenses">
+                                </div>
+                            </Link>
+                            
+                            <Link href="/painel/vehicle">
+                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                                    <GiCityCar className="text-2xl text-white group-hover:text-red-500 " />
                                     <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
                                         Veículos
                                     </h3>
-                                </Link>
-                            </div>
+                                </div>
+                            </Link>
+
+                            <Link href="/painel/expense">
+                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                                    <GiTakeMyMoney className="text-2xl text-white group-hover:text-red-500 " />
+                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                        Despesas
+                                    </h3>
+                                </div>
+                            </Link>
+
+                           
+
                             {/* <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                 <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " />
                                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
@@ -123,8 +129,8 @@ function MyApp() {
                         </div>
                     </div>
                 </div>
-            </Disclosure>
-        </div>
+            </Disclosure >
+        </div >
     )
 }
 

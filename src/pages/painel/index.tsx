@@ -10,7 +10,6 @@ import { withSSRAuth } from '../../utils/withSSRAuth'
 import style from '../styles/painel.module.scss'
 import { setupApiClient } from '../../services/api'
 import AdminDashboard from './dashboard'
-import ProviderDashboard from '../service-provider/dashboard'
 import SideBarMenu from '../../components/SideBarMenu'
 import NavBar from '../../components/NavBar'
 
