@@ -15,12 +15,19 @@ import { useFormik } from 'formik'
 import InputMask from "react-input-mask"
 import { mask, removeMask } from "../utils/CpfCnpjMask"
 
+import { Authcontext, signOut } from "../contexts/AuthContext"
 
 import * as Yup from 'yup'
 import { formatData } from '../utils/DataToYYYYMMDD'
+import ReactDatePicker, { registerLocale } from 'react-datepicker'
+import MaskedInput from 'react-maskedinput'
+import { useState, useContext } from 'react'
 
+import ptBR from 'date-fns/locale/pt-BR'
+registerLocale('ptBR', ptBR)
 
 const SignUp: NextPage = () => {
+    const [startDate, setStartDate] = useState(new Date())
 
     const formik = useFormik({
         initialValues: {
@@ -40,14 +47,13 @@ const SignUp: NextPage = () => {
             cell: Yup.string()
                 .required('Campo Obrigatorio'),
             email: Yup.string().email('Enrereço de e-mail inválido!').required('Campo Obrigatorio'),
-            date: Yup.string().required('Campo Obrigatorio'),
+            // date: Yup.date().required('Campo Obrigatorio').nullable(),
             cpf: Yup.string().required('Campo Obrigatorio'),
             password: Yup.string().required('Senha é obrigatória!'),
             confirmPassword: Yup.string().required('Confirmação de senha é obrigatório!')
                 .oneOf([Yup.ref('password'), null], 'As senhas não se correspondem!')
         }),
         onSubmit: async (values) => {
-            // console.log(values.date)
 
             const data = {
                 name: values.name,
@@ -55,10 +61,8 @@ const SignUp: NextPage = () => {
                 password: values.password,
                 cpf: removeMask(values.cpf),
                 cell: values.cell,
-                birth_date: formatData(values.date)
+                birth_date: startDate.toISOString()
             }
-
-            console.log(data)
 
             try {
                 api.post('/users', data).then(response => {
@@ -104,7 +108,7 @@ const SignUp: NextPage = () => {
                         </div>
 
                         <div className="m-4">
-                            <input id="email" type="email" placeholder="Email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                            <input id="email" className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" type="email" placeholder="Email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                             {formik.touched.email && formik.errors.email ? <p className='text-red-500 text-xs mt-2'>{formik.errors.email}</p> : null}
                         </div>
 
@@ -130,16 +134,18 @@ const SignUp: NextPage = () => {
 
                         <div className="m-4">
 
-                            <InputMask
-                                id='date'
-                                type="text"
-                                mask="99/99/9999"
-                                placeholder="Data de Nascimento"
-                                onChange={formik.handleChange}
-                                value={formik.values.date}
-                                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                            <ReactDatePicker
+                                className='w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
+                                locale={ptBR}
+                                selected={startDate}
+                                onChange={(date: Date) => setStartDate(date)}
+                                dateFormat="dd/MM/yyyy"
+                                customInput={
+                                    <MaskedInput mask="11/11/1111" placeholder="dd/mm/yyyy" />
+                                }
                             />
-                            {formik.touched.date && formik.errors.date ? <p className='text-red-500 text-xs mt-2'>{formik.errors.date}</p> : null}
+
+                            {/* {!startDate? <p className='text-red-500 text-xs mt-2'>Campo Obrigatório</p> : null} */}
                         </div>
 
 

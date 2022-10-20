@@ -1,13 +1,13 @@
 
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 
 import Admin from "."
 import CardExpenses from '../../components/cards/CardExpenses'
 import CardRoutes from '../../components/cards/CardRoutes'
 import CardVehicles from '../../components/cards/CardVehicles'
-import { Authcontext } from '../../contexts/AuthContext'
+import { Authcontext, signOut } from '../../contexts/AuthContext'
 
 import axios from 'axios'
 import { api } from '../../services/apiClient'
@@ -29,7 +29,6 @@ import InputMask from "react-input-mask"
 import { mask, removeMask } from "../../utils/CpfCnpjMask"
 import DatePicker from "react-datepicker"
 
-import "react-datepicker/dist/react-datepicker.css"
 
 import { registerLocale, setDefaultLocale } from "react-datepicker"
 import ptBR from 'date-fns/locale/pt-BR'
@@ -37,9 +36,9 @@ registerLocale('ptBR', ptBR)
 
 import MaskedInput from 'react-maskedinput';
 
-export default function Settings() {
+export default function Account() {
 
-    const { user } = useContext(Authcontext)
+    const { user, updateReferenceUser } = useContext(Authcontext)
 
     const [activeUser, setActiveUser] = useState<UserModel>()
     const [toggle, setToggle] = useState<Boolean>(false)
@@ -49,34 +48,17 @@ export default function Settings() {
         setToggle(!toggle)
     }
 
-    // const getUser = async () => {
-    //     const response = await api.get(`/users/email?email=${user?.email}`)
-    //     console.log(`user: ${response.data}`)
-    //     setActiveUser(response.data)
-    // };
-
-    // useEffect(() => {
-    //     api.get(`/users/email?email=${user?.email}`).then(async (response) => {
-    //         console.log(response)
-    //         const { name, email, password, cpf, cell, birth_date } = response.data
-    //         setActiveUser({ name, email, password, cpf, cell, birth_date })
-    //     }).catch((err) => {
-    //         console.log(err)
-    //     })
-
-    // }, [])
-
     useEffect(() => {
         const fetchData = async () => {
-            const response = await api.get(`/users/email?email=${user?.email}`)
-            console.log('response')
-            console.log(response.data)
+            const response = await api.get(`/users/${user?.email}`)
             const { name, email, password, cpf, cell, birth_date, id } = await response.data
+            let date = new Date(birth_date)
+            setStartDate(date)
             setActiveUser({ name, email, password, cpf, cell, birth_date, id })
         }
         fetchData()
             .catch(console.error)
-    }, [])
+    }, [user?.email])
 
 
     const formik = useFormik({
@@ -84,48 +66,63 @@ export default function Settings() {
         initialValues: {
             name: activeUser?.name || '',
             email: activeUser?.email || '',
-            password: '',
+            currentPassword: '',
             cpf: activeUser?.cpf || '',
             cell: activeUser?.cell || '',
             birth_date: activeUser?.birth_date || '',
-            confirmPassword: '',
+            newPassword: '',
+            confirmNewPassword: '',
         },
         validationSchema: Yup.object({
             name: Yup.string()
                 .max(20, 'Nome deve ter no máximo 20 caracteres.')
                 .min(5, 'Nome deve ter no minimo 5 caracteres.')
-                .required('Campo Obrigatorio'),
+                .required('Campo Obrigatório'),
             cell: Yup.string()
-                .required('Campo Obrigatorio'),
-            email: Yup.string().email('Enrereço de e-mail inválido!').required('Campo Obrigatorio'),
-            birth_date: Yup.string().required('Campo Obrigatorio'),
-            cpf: Yup.string().required('Campo Obrigatorio'),
-            password: Yup.string(),
-            confirmPassword: Yup.string()
-                .oneOf([Yup.ref('password'), null], 'As senhas não se correspondem!')
+                .required('Campo Obrigatório'),
+            email: Yup.string().email('Enrereço de e-mail inválido!').required('Campo Obrigatório'),
+            birth_date: Yup.date(),
+            cpf: Yup.string().required('Campo Obrigatório'),
+            currentPassword: Yup.string(),
+            newPassword: Yup.string(),
+            confirmNewPassword: Yup.string()
+                .oneOf([Yup.ref('newPassword'), null], 'As senhas não se correspondem!')
         }),
         onSubmit: (values) => {
+
             let data = {
                 name: values.name,
                 email: values.email,
                 cell: values.cell,
                 cpf: removeMask(values.cpf),
-                birth_date: values.birth_date,
+                birth_date: startDate.toISOString(),
                 changePassword: toggle,
-                password: values.password
+                newPassword: values.newPassword,
+                currentPassword: values.currentPassword,
+
             }
 
             try {
                 api.put(`/users/${activeUser?.id}`, data).then(response => {
-                    console.log(response)
+                    console.log('update')
+                    console.log(response.data)
                     if (response.status === 201) {
                         ToastifySuccess('Usuário atualizado!')
                         setTimeout(() => {
-                            Router.push('/painel')
-                        }, 4000)
+                            updateReferenceUser({ name: response.data.name, email: response.data.email, isAdmin: response.data.isAdmin })
+                            console.log('logout')
+                            console.log(response.data.logout)
+                            if (response.data.logout)
+                                signOut()
+                            else
+                                Router.push('/painel')
+                        }, 3000)
                     }
                 }).catch((err) => {
-                    return ToastifyError('Erro interno do servidor')
+                    if (err.response && err.response.data && err.response.data.message && err.response.data.statusCode == 400)
+                        return ToastifyError(err.response.data.message)
+                    else
+                        return ToastifyError('Erro interno do servidor')
                 })
             } catch (error) {
                 console.warn(error)
@@ -249,25 +246,6 @@ export default function Settings() {
                                             Data de Nascimento
                                         </label>
 
-                                        {/* <ReactInputMask
-                                            id='date'
-                                            type="text"
-                                            mask="99/99/9999"
-                                            placeholder="Data de Nascimento"
-                                            onChange={formik.handleChange}
-                                            value={formik.values.birth_date}
-                                            onBlur={formik.handleBlur}
-                                            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                        /> */}
-                                        {/* <input
-                                            id="birth_date"
-                                            type="text"
-                                            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                            defaultValue={formik.values.birth_date}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        /> */}
-
                                         <DatePicker
                                             className='w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
                                             locale={ptBR}
@@ -308,26 +286,25 @@ export default function Settings() {
                             </div>
 
                             {toggle ? (
-                                <div className="flex flex-wrap">
+                                <div className="">
                                     <div className="w-full lg:w-6/12 px-4">
                                         <div className="relative w-full mb-3">
                                             <label
                                                 className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
                                                 htmlFor="grid-password"
                                             >
-                                                Senha:
+                                                Senha Atual:
                                             </label>
                                             <input
                                                 //@ts-ignore
                                                 required={toggle}
-                                                id="password"
+                                                id="currentPassword"
                                                 type="password"
                                                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                                value={formik.values.password}
+                                                value={formik.values.currentPassword}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
                                             />
-                                            {formik.touched.password && formik.errors.password ? <p className='text-red-500 text-xs mt-2'>{formik.errors.password}</p> : null}
 
                                         </div>
                                     </div>
@@ -337,19 +314,40 @@ export default function Settings() {
                                                 className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
                                                 htmlFor="grid-password"
                                             >
-                                                Confirmação de senha:
+                                                Nova senha:
                                             </label>
                                             <input
                                                 //@ts-ignore
                                                 required={toggle}
-                                                id="confirmPassword"
+                                                id="newPassword"
                                                 type="password"
                                                 className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
-                                                value={formik.values.confirmPassword}
+                                                value={formik.values.newPassword}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
                                             />
-                                            {formik.touched.confirmPassword && formik.errors.confirmPassword ? <p className='text-red-500 text-xs mt-2'>{formik.errors.confirmPassword}</p> : null}
+
+                                        </div>
+                                    </div>
+                                    <div className="w-full lg:w-6/12 px-4">
+                                        <div className="relative w-full mb-3">
+                                            <label
+                                                className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
+                                                htmlFor="grid-password"
+                                            >
+                                                Confirmação de nova senha:
+                                            </label>
+                                            <input
+                                                //@ts-ignore
+                                                required={toggle}
+                                                id="confirmNewPassword"
+                                                type="password"
+                                                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                                                value={formik.values.confirmNewPassword}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                            />
+                                            {formik.touched.confirmNewPassword && formik.errors.confirmNewPassword ? <p className='text-red-500 text-xs mt-2'>{formik.errors.confirmNewPassword}</p> : null}
 
                                         </div>
                                     </div>
@@ -371,5 +369,5 @@ export default function Settings() {
     )
 }
 
-Settings.layout = Admin
+Account.layout = Admin
 

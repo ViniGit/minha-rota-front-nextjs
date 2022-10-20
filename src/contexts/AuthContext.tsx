@@ -27,6 +27,7 @@ type AuthContextData = {
     signIn(credentials: SignInCredentials): Promise<void>
     user: User | undefined
     isAuthenticated: boolean
+    updateReferenceUser(user: User): Promise<void>
 }
 
 type AuthProviderProps = {
@@ -40,6 +41,7 @@ interface CommonHeaderProperties extends HeadersDefaults {
 export const Authcontext = createContext({} as AuthContextData)
 
 export function signOut() {
+    console.log('logout')
 
     destroyCookie(undefined, 'minha-rota-token')
     destroyCookie(undefined, 'minha-rota-refresh-token')
@@ -48,8 +50,6 @@ export function signOut() {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-
-
     const [user, setUser] = useState<User>()
     const isAuthenticated = false
 
@@ -67,6 +67,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
 
     }, [])
+
+    async function updateReferenceUser(user: User) {
+        setUser(user)
+    }
 
     async function signIn({ email, password }: SignInCredentials) {
         try {
@@ -98,10 +102,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                         api.defaults.headers = { Authorization: `Bearer ${token}` } as CommonHeaderProperties
 
                     }
-                    ToastifySuccess('Login realizado!')
                     setTimeout(() => {
                         Router.push('/painel')
-                    }, 4000)
+                    }, 1000)
                 }
             }).catch((err) => {
                 if (err.response.data.message == 'Email or password incorrect' && err.response.data.statusCode == 400) {
@@ -116,7 +119,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     return (
-        <Authcontext.Provider value={{ signIn, user, isAuthenticated }}>
+        <Authcontext.Provider value={{ signIn, user, isAuthenticated, updateReferenceUser }}>
             {children}
         </Authcontext.Provider>
     )
