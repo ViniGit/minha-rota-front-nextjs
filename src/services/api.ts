@@ -1,7 +1,9 @@
 import axios, { Axios, AxiosError, HeadersDefaults } from 'axios'
+import Router from 'next/router'
 
-import { parseCookies, setCookie } from 'nookies'
-import { signOut } from '../contexts/AuthContext'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
+import { useContext } from 'react'
+import { Authcontext } from '../contexts/AuthContext'
 import { AuthTokenError } from './errors/AuthTokenError'
 // import { signOut } from '../contexts/AuthContext'
 
@@ -12,6 +14,9 @@ interface CommonHeaderProperties extends HeadersDefaults {
 }
 
 export function setupApiClient(ctx = undefined) {
+    // const { signOut } = useContext(Authcontext)
+
+
     let cookies = parseCookies(ctx)
 
     const api = axios.create({
@@ -21,6 +26,18 @@ export function setupApiClient(ctx = undefined) {
         }
     })
 
+    async function signOut() {
+        console.log('logout')
+
+        destroyCookie(null, 'minha-rota-token', {
+            path: "/"
+        })
+        destroyCookie(null, 'minha-rota-refresh-token', {
+            path: "/"
+        })
+
+        Router.push('/')
+    }
 
     api.interceptors.response.use(response => {
         return response

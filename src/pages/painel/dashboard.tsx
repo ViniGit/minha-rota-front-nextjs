@@ -4,6 +4,7 @@ import Head from 'next/head'
 
 import Admin from "."
 import CardExpenses from '../../components/cards/CardExpenses'
+import CardRide from '../../components/cards/CardRide'
 import CardRoutes from '../../components/cards/CardRoutes'
 import CardVehicles from '../../components/cards/CardVehicles'
 
@@ -32,7 +33,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="flex-auto">
                     <div className="w-full mb-12 px-5">
-                        < CardVehicles />
+                        < CardRide />
                     </div>
                 </div>
             </div>

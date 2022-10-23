@@ -1,69 +1,78 @@
 import { useContext, useState } from "react"
-import { Authcontext, signOut } from "../contexts/AuthContext"
+import { Authcontext } from "../contexts/AuthContext"
 import { FiUser } from 'react-icons/fi'
 import { FiChevronDown } from 'react-icons/fi'
 import Link from "next/link"
+import Router from 'next/router'
 
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 function NavBar() {
+    const { signOut } = useContext(Authcontext)
 
     const { user } = useContext(Authcontext)
 
 
-    const [show, setshow] = useState<boolean>(false)
-
-    function handleDropDown() {
-        setshow(!show)
-    }
-
-    function closeDropDown() {
-        setshow(false)
-    }
-
     function handleLogout() {
-        handleDropDown()
         signOut()
     }
 
+    function handleMyAccount() {
+        Router.push('/painel/account')
+
+    }
+
     return (
+
         <nav className="bg-gray-900 p-2 mt-0 fixed w-full z-10 top-0 h-16">
             <div className="container mx-auto flex flex-wrap items-center">
                 <div className="flex w-full md:w-1/2 justify-center md:justify-end text-white font-extrabold">
 
                 </div>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2 ">
-                    <div className="rounded-full bg-gray-800 p-1 text-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <FiUser
-                            className="h-6 w-6 m-1"
-                            aria-hidden="true"
-                        />
+                <DropdownMenu.Root >
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 ">
+                        <div className="rounded-lg bg-gray-800 p-1 text-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                            <FiUser
+                                className="h-6 w-6 m-1"
+                                aria-hidden="true"
+                            />
 
-                    </div>
-                    <div className="flex flex-shrink-0 items-center m-2 hover:cursor-pointer hover:text-gray-400" onClick={handleDropDown}>
-                        <h3 className="text-white m-1 ">{user?.name} </h3>
-                        <FiChevronDown
-                            onClick={handleDropDown}
-                            className="h-6 w-6 m-1 text-white"
-                            aria-hidden="true"
-                        />
-                    </div>
-
-                    <div className="relative ml-3">
-                        <div>
-                            <button type="button" className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <span className="sr-only">Open user menu</span>
-                                {/* <img className="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt=""> */}
-                            </button>
                         </div>
-                        {show ? <div id="dropdown" onClick={closeDropDown} className="absolute right-0 z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex={-1}>
+                        <DropdownMenu.Trigger>
+                            <div className="flex flex-shrink-0 items-center m-2 hover:cursor-pointer hover:text-gray-400" >
+                                <h3 className="text-white text-base m-1 font-extralight">{user?.name} </h3>
+                                <FiChevronDown
+                                    className="h-6 w-6 m-1 text-white"
+                                    aria-hidden="true"
+                                />
+                            </div>
+                        </DropdownMenu.Trigger>
+                        <DropdownMenu.Portal>
+                            <DropdownMenu.Content className="bg-white p-2 rounded -m-2 relative z-10">
+                                <DropdownMenu.RadioItem value="">
+                                    <DropdownMenu.ItemIndicator>
+                                    </DropdownMenu.ItemIndicator>
+                                    <a onClick={handleMyAccount} className="block text-sm  hover:cursor-pointer" role="menuitem" tabIndex={-1} id="user-menu-item-2"><p className=" m-3 font-bold text-sm hover:cursor-pointer">Minha Conta</p></a>
+                                </DropdownMenu.RadioItem>
+                                <DropdownMenu.RadioItem value="">
+                                    <DropdownMenu.ItemIndicator>
+                                    </DropdownMenu.ItemIndicator>
+                                    <a onClick={handleLogout} className="block text-sm  hover:cursor-pointer" role="menuitem" tabIndex={-1} id="user-menu-item-2"><p className="m-3 text-sm">Sair</p></a>
+                                </DropdownMenu.RadioItem>
+                            </DropdownMenu.Content>
+                        </DropdownMenu.Portal>
+                    </div>
+
+                </DropdownMenu.Root>
+                {/* {show ?
+                        <div id="dropdown" onClick={closeDropDown} className="focus:ring-0 absolute right-0 z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex={-1}>
                             <Link href="/painel/account" role="menuitem" tabIndex={-1} id="user-menu-item-1"><p className="m-3 font-bold hover:cursor-pointer">Minha Conta</p></Link>
                             <a onClick={handleLogout} className="block text-sm text-gray-700 hover:cursor-pointer" role="menuitem" tabIndex={-1} id="user-menu-item-2"><p className="m-3">Sair</p></a>
-                        </div> : null}
+                        </div>
+                        : null} */}
 
-                    </div>
-                </div>
             </div>
-        </nav>
+        </nav >
         // <nav className="dark:bg-gray-900p-2 mt-0 fixed w-full z-10 top-0">
         //     <div className="container mx-auto flex flex-wrap items-center">
         //         <div className="relative flex h-16 items-center justify-between">

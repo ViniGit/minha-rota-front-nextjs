@@ -8,16 +8,16 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useState } from 'react';
 
 
-export default function Vehicle() {
+export default function Travel() {
 
     const [color, setColor] = useState('blue');
     return (
         < >
             <Head>
-                <title>Veículos | Minha Rota</title>
+                <title>Viagens | Minha Rota</title>
             </Head>
             <div className="p-8  xl:flex w-full ">
-                <h1>Veículos !!!!!</h1>
+                <h1>Viageeeennnssss !!!!!</h1>
 
                 
             </div>
@@ -25,5 +25,5 @@ export default function Vehicle() {
     )
 }
 
-Vehicle.layout = Admin
+Travel.layout = Admin
 

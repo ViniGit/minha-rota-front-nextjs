@@ -15,7 +15,7 @@ import { useFormik } from 'formik'
 import InputMask from "react-input-mask"
 import { mask, removeMask } from "../utils/CpfCnpjMask"
 
-import { Authcontext, signOut } from "../contexts/AuthContext"
+import { Authcontext } from "../contexts/AuthContext"
 
 import * as Yup from 'yup'
 import { formatData } from '../utils/DataToYYYYMMDD'
@@ -90,9 +90,9 @@ const SignUp: NextPage = () => {
             <Head>
                 <title>Cadastro | Minha Rota</title>
             </Head>
-            <div className="bg-gray-900 m-20 rounded-lg">
-                <div className="flex p-20">
-                    <section className="flex-auto w-3/6	m-auto">
+            <div className="bg-gray-900 m-20 rounded-lg w-10/12 mx-auto">
+                <div className="flex p-20 flex-wrap content-center">
+                    <section className="flex-auto w-2/6	m-auto p-5">
                         {/* <h1 className="text-white text-xl"> Cadastro </h1> */}
                         <p className="text-white text-xl"> Faça seu cadastro, entre na plataforma e comece a administrar suas rotas!</p>
                         <a className="back-link" href="/">
@@ -100,7 +100,7 @@ const SignUp: NextPage = () => {
                             <p className="text-base text-white">Já possui cadastro?</p>
                         </a>
                     </section>
-                    <form className="flex-auto w-3/6" onSubmit={formik.handleSubmit}>
+                    <form className="flex-auto w-3/6 p-5" onSubmit={formik.handleSubmit}>
 
                         <div className="m-4">
                             <input id="name" placeholder="Nome" type="text" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />

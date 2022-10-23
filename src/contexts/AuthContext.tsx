@@ -28,6 +28,7 @@ type AuthContextData = {
     user: User | undefined
     isAuthenticated: boolean
     updateReferenceUser(user: User): Promise<void>
+    signOut(): Promise<void>
 }
 
 type AuthProviderProps = {
@@ -40,14 +41,7 @@ interface CommonHeaderProperties extends HeadersDefaults {
 
 export const Authcontext = createContext({} as AuthContextData)
 
-export function signOut() {
-    console.log('logout')
 
-    destroyCookie(undefined, 'minha-rota-token')
-    destroyCookie(undefined, 'minha-rota-refresh-token')
-
-    Router.push('/')
-}
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User>()
@@ -68,6 +62,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     }, [])
 
+    async function signOut() {
+        console.log('logout')
+
+        destroyCookie(null, 'minha-rota-token', {
+            path: "/"
+        })
+        destroyCookie(null, 'minha-rota-refresh-token',{
+            path: "/"
+        })
+
+        Router.push('/')
+    }
     async function updateReferenceUser(user: User) {
         setUser(user)
     }
@@ -119,7 +125,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     return (
-        <Authcontext.Provider value={{ signIn, user, isAuthenticated, updateReferenceUser }}>
+        <Authcontext.Provider value={{ signIn, user, isAuthenticated, updateReferenceUser, signOut }}>
             {children}
         </Authcontext.Provider>
     )

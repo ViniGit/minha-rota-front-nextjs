@@ -7,7 +7,7 @@ import Admin from "."
 import CardExpenses from '../../components/cards/CardExpenses'
 import CardRoutes from '../../components/cards/CardRoutes'
 import CardVehicles from '../../components/cards/CardVehicles'
-import { Authcontext, signOut } from '../../contexts/AuthContext'
+import { Authcontext } from '../../contexts/AuthContext'
 
 import axios from 'axios'
 import { api } from '../../services/apiClient'
@@ -38,7 +38,7 @@ import MaskedInput from 'react-maskedinput';
 
 export default function Account() {
 
-    const { user, updateReferenceUser } = useContext(Authcontext)
+    const { user, updateReferenceUser, signOut } = useContext(Authcontext)
 
     const [activeUser, setActiveUser] = useState<UserModel>()
     const [toggle, setToggle] = useState<Boolean>(false)
@@ -75,7 +75,7 @@ export default function Account() {
         },
         validationSchema: Yup.object({
             name: Yup.string()
-                .max(20, 'Nome deve ter no máximo 20 caracteres.')
+                .max(50, 'Nome deve ter no máximo 20 caracteres.')
                 .min(5, 'Nome deve ter no minimo 5 caracteres.')
                 .required('Campo Obrigatório'),
             cell: Yup.string()
@@ -110,7 +110,6 @@ export default function Account() {
                         ToastifySuccess('Usuário atualizado!')
                         setTimeout(() => {
                             updateReferenceUser({ name: response.data.name, email: response.data.email, isAdmin: response.data.isAdmin })
-                            console.log('logout')
                             console.log(response.data.logout)
                             if (response.data.logout)
                                 signOut()
@@ -137,11 +136,11 @@ export default function Account() {
             <Head>
                 <title>Settings | Minha Rota</title>
             </Head>
-            <div className='p-8 xl:flex w-full '>
-                <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0 bg-white dark:bg-gray-900">
-                    <div className="rounded-t bg-white dark:bg-gray-900 mb-0 px-6 py-6">
+            <div className='p-8 xl:flex w-full content-center '>
+                <div className="relative flex w-11/12 flex-col min-w-0 break-words mb-6 shadow-lg rounded-xl border-0 bg-dark bg-white mx-auto mt-10">
+                    <div className="rounded-t bg-white mb-0 px-6 py-6 mt-3">
                         <div className="text-center flex justify-between">
-                            <h6 className="text-blueGray-700 text-xl font-bold text-white">Minha conta</h6>
+                            <h6 className="text-blueGray-700 text-2xl font-light text-dark ml-2">Minha conta</h6>
                             {/* <button
                                 className="bg-blueGray-700 active:bg-blueGray-600 text-white font-bold  text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                                 type="button"
@@ -152,14 +151,16 @@ export default function Account() {
                     </div>
                     <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                         <form onSubmit={formik.handleSubmit}>
-                            <h6 className="text-blueGray-400 text-base mt-3 mb-6 font-bold  text-white">
+                            <h6 className="text-blueGray-400 text-lg mt-3 mb-6 ml-4 font-light text-dark">
                                 Informações do usuário:
                             </h6>
                             <div className="flex flex-wrap">
                                 <div className="w-full lg:w-6/12 px-4">
+
                                     <div className="relative w-full mb-3">
+
                                         <label
-                                            className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
+                                            className="block text-base font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
                                             Nome
@@ -167,7 +168,8 @@ export default function Account() {
                                         <input
                                             id="name"
                                             type="text"
-                                            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                                            placeholder="Seu nome"
+                                            className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
                                             value={formik.values.name}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
@@ -194,7 +196,7 @@ export default function Account() {
                                 <div className="w-full lg:w-6/12 px-4">
                                     <div className="relative w-full mb-3">
                                         <label
-                                            className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
+                                            className="block text-base font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
                                             CPF/CNPJ
@@ -207,7 +209,7 @@ export default function Account() {
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                         /> */}
-                                        <input id="cpf" type="text" maxLength={18} placeholder="CPF/CNPJ" value={mask(formik.values.cpf)} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                                        <input id="cpf" type="text" maxLength={18} placeholder="000.000.000-00" value={mask(formik.values.cpf)} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600" />
 
                                         {formik.touched.cpf && formik.errors.cpf ? <p className='text-red-500 text-xs mt-2'>{formik.errors.cpf}</p> : null}
 
@@ -216,7 +218,7 @@ export default function Account() {
                                 <div className="w-full lg:w-6/12 px-4">
                                     <div className="relative w-full mb-3">
                                         <label
-                                            className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
+                                            className="block text-base font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
                                             Celular
@@ -225,12 +227,12 @@ export default function Account() {
                                         <InputMask
                                             id='cell'
                                             mask="(99) 99999-9999"
-                                            placeholder="Celular"
+                                            placeholder="(99) 99999-9999"
                                             type="text"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleChange}
                                             value={formik.values.cell}
-                                            className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                                            className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600 "
                                         />
 
                                         {formik.touched.cell && formik.errors.cell ? <p className='text-red-500 text-xs mt-2'>{formik.errors.cell}</p> : null}
@@ -240,14 +242,14 @@ export default function Account() {
                                 <div className="w-full lg:w-6/12 px-4">
                                     <div className="relative w-full mb-3">
                                         <label
-                                            className="block  text-blueGray-600 text-sm font-bold mb-2 text-white "
+                                            className="block text-base font-thin mb-2 text-gray-400 "
                                             htmlFor="grid-password"
                                         >
                                             Data de Nascimento
                                         </label>
 
                                         <DatePicker
-                                            className='w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
+                                            className='w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600 '
                                             locale={ptBR}
                                             selected={startDate}
                                             onChange={(date: Date) => setStartDate(date)}
@@ -280,8 +282,8 @@ export default function Account() {
                             <div className='m-4'>
                                 <label htmlFor="default-toggle" className="inline-flex relative items-center cursor-pointer">
                                     <input onChange={handleToggle} type="checkbox" value="" id="default-toggle" className="sr-only peer" />
-                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                    <span className="ml-3 text-sm text-gray-900 dark:text-gray-300">Trocar senha</span>
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none  peer-focus:ring-blue-300 rounded-full dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-500"></div>
+                                    <span className="ml-3 text-base text-gray-500 font-medium">Trocar senha</span>
                                 </label>
                             </div>
 
@@ -290,17 +292,17 @@ export default function Account() {
                                     <div className="w-full lg:w-6/12 px-4">
                                         <div className="relative w-full mb-3">
                                             <label
-                                                className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
+                                                className="block text-base font-thin mb-2 text-gray-400"
                                                 htmlFor="grid-password"
                                             >
-                                                Senha Atual:
+                                                Senha atual:
                                             </label>
                                             <input
                                                 //@ts-ignore
                                                 required={toggle}
                                                 id="currentPassword"
                                                 type="password"
-                                                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                                                className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600 "
                                                 value={formik.values.currentPassword}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
@@ -311,7 +313,7 @@ export default function Account() {
                                     <div className="w-full lg:w-6/12 px-4">
                                         <div className="relative w-full mb-3">
                                             <label
-                                                className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
+                                                className="block text-base font-thin mb-2 text-gray-400"
                                                 htmlFor="grid-password"
                                             >
                                                 Nova senha:
@@ -321,7 +323,7 @@ export default function Account() {
                                                 required={toggle}
                                                 id="newPassword"
                                                 type="password"
-                                                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                                                className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600 "
                                                 value={formik.values.newPassword}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
@@ -332,7 +334,7 @@ export default function Account() {
                                     <div className="w-full lg:w-6/12 px-4">
                                         <div className="relative w-full mb-3">
                                             <label
-                                                className="block  text-blueGray-600 text-sm font-bold mb-2 text-white"
+                                                className="block text-base font-thin mb-2 text-gray-400"
                                                 htmlFor="grid-password"
                                             >
                                                 Confirmação de nova senha:
@@ -342,7 +344,7 @@ export default function Account() {
                                                 required={toggle}
                                                 id="confirmNewPassword"
                                                 type="password"
-                                                className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                                                className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600 "
                                                 value={formik.values.confirmNewPassword}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
@@ -355,8 +357,8 @@ export default function Account() {
                             )
                                 : null}
 
-                            <div className="m-4">
-                                <button type="submit" className="w-full px-3 py-4 text-white bg-red-500 rounded-md focus:bg-red-600 focus:outline-none">Atualizar</button>
+                            <div className="m-2 flex justify-end">
+                                <button type="submit" className="px-3 py-4 text-white text-base font-semibold bg-green-500 rounded-md hover:bg-green-600 focus:bg-green-600 focus:outline-none">Salvar</button>
                             </div>
                         </form>
                     </div>

@@ -9,13 +9,15 @@ import {
     MdOutlineLogout,
 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg"
-import { FaRegComments } from "react-icons/fa"
+import { FaMapMarkedAlt, FaRegComments } from "react-icons/fa"
 import { BiMessageSquareDots } from "react-icons/bi"
-import { signOut } from "../contexts/AuthContext";
+import { Authcontext } from "../contexts/AuthContext";
 import Link from "next/link";
+import { useContext } from "react";
 
 
 function MyApp() {
+    const { signOut } = useContext(Authcontext)
 
     function handleLogout() {
         signOut()
@@ -24,12 +26,12 @@ function MyApp() {
     return (
         <div>
             <Disclosure as="nav">
-                <Disclosure.Button className="absolute top-4 right-4 inline-flex items-center peer justify-center rounded-md p-2 text-gray-400 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
+                {/* <Disclosure.Button className="absolute top-4 right-4 inline-flex items-center peer justify-center rounded-md p-2 text-gray-400 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
                     <GiHamburgerMenu
                         className="block h-6 w-6"
                         aria-hidden="true"
                     />
-                </Disclosure.Button>
+                </Disclosure.Button> */}
                 <div className="p-6 w-1/2 h-screen bg-white dark:bg-gray-900 z-20 fixed top-0 -left-96 lg:left-0 lg:w-60  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                     <div className="flex flex-col justify-start item-center">
                         <Link href="/painel/dashboard">
@@ -55,7 +57,7 @@ function MyApp() {
                                     </h3>
                                 </div>
                             </Link>
-                            
+
                             <Link href="/painel/vehicle">
                                 <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                     <GiCityCar className="text-2xl text-white group-hover:text-red-500 " />
@@ -74,7 +76,16 @@ function MyApp() {
                                 </div>
                             </Link>
 
-                           
+                            <Link href="/painel/travel">
+                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                                    <FaMapMarkedAlt className="text-2xl text-white group-hover:text-red-500 " />
+                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                        Viagens
+                                    </h3>
+                                </div>
+                            </Link>
+
+
 
                             {/* <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                 <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " />
@@ -117,7 +128,7 @@ function MyApp() {
                             </div>
                         </div> */}
                         {/* logout */}
-                        <div className=" my-4">
+                        {/* <div className=" my-4">
                             <div className="flex mb-2 justify-start items-center gap-4 pl-5 border border-gray-200  hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                                 <MdOutlineLogout className="text-2xl text-white group-hover:text-red-500 " />
                                 <button onClick={handleLogout} type="button">
@@ -126,7 +137,7 @@ function MyApp() {
                                     </h3>
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </Disclosure >
