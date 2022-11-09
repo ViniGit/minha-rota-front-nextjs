@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useContext } from 'react'
 import { FiPower } from 'react-icons/fi'
-import { Authcontext, signOut } from '../../contexts/AuthContext'
 
 import { withSSRAuth } from '../../utils/withSSRAuth'
 
@@ -34,3 +33,12 @@ export default function Painel({ children }: Props) {
     )
 }
 
+// export const getServerSideProps = withSSRAuth(async (ctx) => {
+//     // @ts-ignore
+//     const apiClient = setupApiClient(ctx)
+//     const response = await apiClient.get('/me')
+
+//     return {
+//         props: {}
+//     }
+// })

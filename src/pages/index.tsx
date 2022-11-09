@@ -7,10 +7,17 @@ import { withSSRGuest } from '../utils/withSSRGuest'
 import { ToastContainer } from 'react-toastify'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import ForgotPassword from '../components/modals/ForgotPassword'
 
 export default function Login() {
+  const [open, setOpen] = useState(false)
+
+  function openModal() {
+    setOpen(!open)
+  }
 
   const { signIn } = useContext(Authcontext)
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -26,6 +33,7 @@ export default function Login() {
         email: values.email,
         password: values.password,
       }
+      console.log(data)
       signIn(data)
 
     },
@@ -52,7 +60,7 @@ export default function Login() {
                 <div className="mb-6">
                   <div className="flex justify-between mb-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">Senha</label>
-                    <a href="#!" className="text-sm text-gray-400 focus:outline-none focus:text-red-500 hover:text-red-500 dark:hover:text-red-300">Esqueceu sua senha?</a>
+                    <button type="button" onClick={openModal} className="text-sm text-gray-400 focus:outline-none focus:text-red-500 hover:text-red-500 dark:hover:text-red-300">Esqueceu sua senha?</button>
                   </div>
                   <input type="password" name="password" id="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
                   {formik.touched.password && formik.errors.password ? <p className="text-red-500 py-2">{formik.errors.password}</p> : null}
@@ -65,6 +73,8 @@ export default function Login() {
             </div>
           </div>
         </div>
+        {open && <ForgotPassword></ForgotPassword>}
+
       </div>
       <ToastContainer />
 

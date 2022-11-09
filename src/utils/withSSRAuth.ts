@@ -4,6 +4,7 @@ import { AuthTokenError } from "../services/errors/AuthTokenError"
 
 export function withSSRAuth(fn: GetServerSideProps) {
     return async (ctx: GetServerSidePropsContext) => {
+        console.log(ctx)
         const cookies = parseCookies(ctx)
         if (!cookies['minha-rota-token']) {
             return {

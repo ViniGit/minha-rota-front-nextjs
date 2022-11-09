@@ -27,7 +27,6 @@ export function setupApiClient(ctx = undefined) {
     })
 
     async function signOut() {
-        console.log('logout')
 
         destroyCookie(null, 'minha-rota-token', {
             path: "/"
@@ -60,6 +59,8 @@ export function setupApiClient(ctx = undefined) {
                     api.post('/refresh-token', {
                         token: refreshToken
                     }).then(response => {
+                        debugger
+
                         const { token } = response.data
 
                         setCookie(ctx, 'minha-rota-token', token, {

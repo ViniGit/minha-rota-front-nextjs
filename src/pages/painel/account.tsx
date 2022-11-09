@@ -35,6 +35,7 @@ import ptBR from 'date-fns/locale/pt-BR'
 registerLocale('ptBR', ptBR)
 
 import MaskedInput from 'react-maskedinput';
+import { withSSRAuth } from '../../utils/withSSRAuth'
 
 export default function Account() {
 
@@ -57,7 +58,6 @@ export default function Account() {
             setActiveUser({ name, email, password, cpf, cell, birth_date, id })
         }
         fetchData()
-            .catch(console.error)
     }, [user?.email])
 
 
@@ -104,13 +104,11 @@ export default function Account() {
 
             try {
                 api.put(`/users/${activeUser?.id}`, data).then(response => {
-                    console.log('update')
                     console.log(response.data)
                     if (response.status === 201) {
                         ToastifySuccess('Usuário atualizado!')
                         setTimeout(() => {
                             updateReferenceUser({ name: response.data.name, email: response.data.email, isAdmin: response.data.isAdmin })
-                            console.log(response.data.logout)
                             if (response.data.logout)
                                 signOut()
                             else
@@ -373,3 +371,12 @@ export default function Account() {
 
 Account.layout = Admin
 
+// export const getServerSideProps = withSSRAuth(async (ctx) => {
+//     // @ts-ignore
+//     const apiClient = setupApiClient(ctx)
+//     const response = await apiClient.get('/me')
+
+//     return {
+//         props: {}
+//     }
+// })

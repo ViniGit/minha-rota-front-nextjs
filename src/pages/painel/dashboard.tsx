@@ -7,6 +7,7 @@ import CardExpenses from '../../components/cards/CardExpenses'
 import CardRide from '../../components/cards/CardRide'
 import CardRoutes from '../../components/cards/CardRoutes'
 import CardVehicles from '../../components/cards/CardVehicles'
+import { withSSRAuth } from '../../utils/withSSRAuth'
 
 export default function AdminDashboard() {
 
@@ -43,3 +44,12 @@ export default function AdminDashboard() {
 
 AdminDashboard.layout = Admin
 
+// export const getServerSideProps = withSSRAuth(async (ctx) => {
+//     // @ts-ignore
+//     const apiClient = setupApiClient(ctx)
+//     const response = await apiClient.get('/me')
+
+//     return {
+//         props: {}
+//     }
+// })

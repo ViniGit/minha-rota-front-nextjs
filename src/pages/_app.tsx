@@ -3,6 +3,7 @@ import { AuthProvider } from '../contexts/AuthContext'
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/global.scss'
 import "react-datepicker/dist/react-datepicker.css"
+
 type Props = {
   title: string
   children:
@@ -23,11 +24,11 @@ function MyApp({ Component, pageProps }: AppLayoutProps) {
   const Layout = Component.layout || (({ children }: Props) => <>{children}</>)
 
   return (
-      <AuthProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </AuthProvider>
+    <AuthProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AuthProvider>
   )
 }
 

@@ -6,6 +6,7 @@ import Head from 'next/head'
 import Admin from "."
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useState } from 'react';
+import { withSSRAuth } from '../../utils/withSSRAuth';
 
 
 export default function Vehicle() {
@@ -19,7 +20,7 @@ export default function Vehicle() {
             <div className="p-8  xl:flex w-full ">
                 <h1>Veículos !!!!!</h1>
 
-                
+
             </div>
         </>
     )
@@ -27,3 +28,12 @@ export default function Vehicle() {
 
 Vehicle.layout = Admin
 
+// export const getServerSideProps = withSSRAuth(async (ctx) => {
+//     // @ts-ignore
+//     const apiClient = setupApiClient(ctx)
+//     const response = await apiClient.get('/me')
+
+//     return {
+//         props: {}
+//     }
+// })

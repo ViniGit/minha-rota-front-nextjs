@@ -7,17 +7,20 @@ import {
     MdOutlineMoreHoriz,
     MdOutlineSettings,
     MdOutlineLogout,
-} from "react-icons/md";
+} from "react-icons/md"
 import { CgProfile } from "react-icons/cg"
 import { FaMapMarkedAlt, FaRegComments } from "react-icons/fa"
 import { BiMessageSquareDots } from "react-icons/bi"
-import { Authcontext } from "../contexts/AuthContext";
-import Link from "next/link";
-import { useContext } from "react";
+import { Authcontext } from "../contexts/AuthContext"
+import Link from "next/link"
+import { useContext } from "react"
+import { useRouter } from "next/router"
 
 
 function MyApp() {
     const { signOut } = useContext(Authcontext)
+
+    const router = useRouter()
 
     function handleLogout() {
         signOut()
@@ -41,18 +44,18 @@ function MyApp() {
                         </Link>
                         <div className=" my-4 border-b border-gray-100 pb-4">
                             <Link href="/painel/dashboard">
-                                <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                    <MdOutlineSpaceDashboard className="text-2xl text-white group-hover:text-red-500 " />
-                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                <div className={router.pathname == '/painel/dashboard' ? "flex mb-2 justify-start items-center gap-4 pl-5 bg-gray-800 p-2 rounded-md group cursor-pointer shadow-lg m-auto" : "flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"}>
+                                    <MdOutlineSpaceDashboard className={router.pathname == '/painel/dashboard' ? "text-2xl text-red-500 " : "text-2xl text-white group-hover:text-red-500 "} />
+                                    <h3 className={router.pathname == '/painel/dashboard' ? "text-base text-red-500 font-semibold " : "text-base text-white group-hover:text-red-500 font-semibold "}>
                                         Dashboard
                                     </h3>
                                 </div>
                             </Link>
 
                             <Link href="/painel/route">
-                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                    <GiPathDistance className="text-2xl text-white group-hover:text-red-500 " />
-                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                <div className={router.pathname == '/painel/route' ? "flex  mb-2 justify-start items-center gap-4 pl-5 bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" : "flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"}>
+                                    <GiPathDistance className={router.pathname == '/painel/route' ? "text-2xl text-red-500 " : "text-2xl text-white group-hover:text-red-500 "} />
+                                    <h3 className={router.pathname == '/painel/route' ? "text-base text-red-500 font-semibold " : "text-base text-white group-hover:text-red-500 font-semibold "}>
                                         Trajetos
                                     </h3>
                                 </div>

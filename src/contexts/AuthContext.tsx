@@ -63,12 +63,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }, [])
 
     async function signOut() {
-        console.log('logout')
 
         destroyCookie(null, 'minha-rota-token', {
             path: "/"
         })
-        destroyCookie(null, 'minha-rota-refresh-token',{
+        destroyCookie(null, 'minha-rota-refresh-token', {
             path: "/"
         })
 
@@ -79,13 +78,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     async function signIn({ email, password }: SignInCredentials) {
+
         try {
             await api.post('/sessions', {
                 email,
                 password
             }).then(response => {
                 if (response.status === 200) {
-
                     if (response.data) {
                         const { token, refresh_token, isAdmin } = response.data
                         const { name } = response.data.user

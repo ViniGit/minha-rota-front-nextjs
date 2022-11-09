@@ -1,7 +1,6 @@
 
 // format date to YYYYMMDD
 export function formatData(data: string) {
-    console.log(data)
 
     var [day, month, year] = data.split("/")
 
