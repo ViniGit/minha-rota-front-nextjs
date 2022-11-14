@@ -26,6 +26,7 @@
     "next": "12.2.5",
     "nookies": "^2.5.2",
     "react": "^18.2.0",
+    "react-currency-input-field": "^3.6.9",
     "react-datepicker": "^4.8.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
@@ -38,6 +39,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@tsconfig/next": "^1.0.4",
     "@types/node": "^18.11.3",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",

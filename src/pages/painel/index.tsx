@@ -1,13 +1,3 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { useContext } from 'react'
-import { FiPower } from 'react-icons/fi'
-
-import { withSSRAuth } from '../../utils/withSSRAuth'
-
-
-import style from '../styles/painel.module.scss'
-import { setupApiClient } from '../../services/api'
 import AdminDashboard from './dashboard'
 import SideBarMenu from '../../components/SideBarMenu'
 import NavBar from '../../components/NavBar'
@@ -32,13 +22,3 @@ export default function Painel({ children }: Props) {
         </>
     )
 }
-
-// export const getServerSideProps = withSSRAuth(async (ctx) => {
-//     // @ts-ignore
-//     const apiClient = setupApiClient(ctx)
-//     const response = await apiClient.get('/me')
-
-//     return {
-//         props: {}
-//     }
-// })

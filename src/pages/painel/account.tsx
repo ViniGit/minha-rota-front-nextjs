@@ -17,12 +17,8 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { ToastifySuccess } from '../../toastify/toastify-succes'
 import Router from 'next/router'
-import { ToastifyWarn } from '../../toastify/toastify-warn'
 import { ToastifyError } from '../../toastify/toastify-error'
-import { Value } from 'sass'
-import { formatData } from '../../utils/DataToYYYYMMDD'
 import { ToastContainer } from 'react-toastify'
-import ReactInputMask from 'react-input-mask'
 
 import InputMask from "react-input-mask"
 
@@ -30,12 +26,11 @@ import { mask, removeMask } from "../../utils/CpfCnpjMask"
 import DatePicker from "react-datepicker"
 
 
-import { registerLocale, setDefaultLocale } from "react-datepicker"
+import { registerLocale } from "react-datepicker"
 import ptBR from 'date-fns/locale/pt-BR'
 registerLocale('ptBR', ptBR)
 
 import MaskedInput from 'react-maskedinput';
-import { withSSRAuth } from '../../utils/withSSRAuth'
 
 export default function Account() {
 
@@ -370,13 +365,3 @@ export default function Account() {
 }
 
 Account.layout = Admin
-
-// export const getServerSideProps = withSSRAuth(async (ctx) => {
-//     // @ts-ignore
-//     const apiClient = setupApiClient(ctx)
-//     const response = await apiClient.get('/me')
-
-//     return {
-//         props: {}
-//     }
-// })
