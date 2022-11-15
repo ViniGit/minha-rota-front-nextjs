@@ -1,27 +1,27 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useEffect, useState, useCallback } from "react"
 import { api } from "../../../services/apiClient"
 import { ToastifySuccess } from "../../../toastify/toastify-succes"
 
 
-interface RoutesProps {
+interface VehicleProps {
     id: string
-    destination: string
-    distance: number
-    price: number
+    plate: string
+    type: string
+    km_per_lt: number
 }
 
-interface RouteContextData {
+interface VehicleContextData {
     search(type?: searchPros): Promise<void>
-    handleDelete(page: RoutesProps): Promise<void>
-    setRouteEdit(route: RoutesProps): Promise<void>
+    handleDelete(page: VehicleProps): Promise<void>
+    setVehicleEdit(VehicleContext: VehicleProps): Promise<void>
     page(page: number): Promise<void>
-    routes: RoutesProps[]
+    vehicles: VehicleProps[]
     type: string,
     count: number,
     pageR: number,
 }
 
-interface RouteProvaiderProps {
+interface VehicleProviderProps {
     children: React.ReactNode
 }
 
@@ -30,17 +30,17 @@ interface searchPros {
     pageR?: number
 }
 
-export const RouteContext = createContext({} as RouteContextData)
+export const VehicleContext = createContext({} as VehicleContextData)
 
-export function RouteProvider({ children }: RouteProvaiderProps) {
-    const [routes, setRoutes] = useState<RoutesProps[]>([])
+export function VehicleProvider({ children }: VehicleProviderProps) {
+    const [vehicles, setVehicles] = useState<VehicleProps[]>([])
     const [type, setType] = useState<string>('')
-    const [route, setRoute] = useState<RoutesProps>()
+    const [vehicle, setVehicle] = useState<VehicleProps>()
     const [count, setCount] = useState<number>(0)
     const [pageR, setPageR] = useState<number>(1)
 
     useEffect(() => {
-        api.get("/route",
+        api.get("/vehicle",
             {
                 params: {
                     take: 5,
@@ -49,14 +49,16 @@ export function RouteProvider({ children }: RouteProvaiderProps) {
             }
         )
             .then(response => {
-                setRoutes(response.data.routes)
+                console.log(response.data.count)
+                setVehicles(response.data.vehicle)
                 setCount(response.data.count)
             })
 
 
     }, [])
 
-    async function handleDelete(route: RoutesProps) {
+
+    async function handleDelete(vehicle: VehicleProps) {
         let value = false
 
         if (confirm("Confirmar Exclusão?") == true) {
@@ -66,11 +68,11 @@ export function RouteProvider({ children }: RouteProvaiderProps) {
         }
 
         if (value) {
-            await api.delete("/route", { params: { id: route.id } })
+            await api.delete("/vehicle", { params: { id: vehicle.id } })
                 .then(response => {
                     console.log(response)
                     if (response.status == 200)
-                        ToastifySuccess('Trajeto excluído!')
+                        ToastifySuccess('Veículo excluído!')
                 }).catch(err => {
                     console.log(err)
                 })
@@ -80,20 +82,20 @@ export function RouteProvider({ children }: RouteProvaiderProps) {
         }
     }
 
-    async function setRouteEdit(route: RoutesProps) {
-        console.log(route)
-        setRoute(route)
+    async function setVehicleEdit(vehicle: VehicleProps) {
+        console.log(vehicle)
+        setVehicle(vehicle)
 
     }
 
     async function search({ take = 5, pageR = 0 }: searchPros) {
-        const response = await api.get("/route", {
+        const response = await api.get("/vehicle", {
             params: {
                 take,
                 skip: take * pageR
             }
         })
-        setRoutes(response.data.routes)
+        setVehicles(response.data.vehicle)
         setCount(response.data.count)
 
     }
@@ -103,8 +105,8 @@ export function RouteProvider({ children }: RouteProvaiderProps) {
     }
 
     return (
-        <RouteContext.Provider value={{ search, handleDelete, setRouteEdit, page, routes, type, count, pageR }}>
+        <VehicleContext.Provider value={{ search, handleDelete, setVehicleEdit, page, vehicles, type, count, pageR }}>
             {children}
-        </RouteContext.Provider>
+        </VehicleContext.Provider>
     )
 }

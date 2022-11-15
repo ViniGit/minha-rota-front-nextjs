@@ -1,11 +1,11 @@
 import { useContext, useState } from "react"
-import { RouteContext } from "../../../../contexts/Table/route"
+import { VehicleContext } from "../../../../contexts/Table/vehicle"
 import PaginationItem from "./PaginationItem"
 
 interface PaginationProps {
-    totalCountRegisters: number
-    registersPerPage?: number
-    currentPage?: number
+    totalCountRegisters: number;
+    registersPerPage?: number;
+    currentPage?: number;
     onPageChange: (page: number) => void
 }
 
@@ -25,12 +25,12 @@ function Pagination({
     currentPage = 1,
     onPageChange,
 }: PaginationProps) {
-    
+
     const [active, setActive] = useState(true)
     const [take, setTake] = useState<Number>(5)
     const [skip, setSkip] = useState(0)
 
-    const { search } = useContext(RouteContext)
+    const { search } = useContext(VehicleContext)
 
     async function next() {
         await search({ take: take as number, pageR: skip as number })

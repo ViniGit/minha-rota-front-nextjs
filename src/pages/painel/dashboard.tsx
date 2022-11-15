@@ -7,11 +7,13 @@ import CardExpenses from '../../components/cards/CardExpenses'
 import CardRide from '../../components/cards/CardRide'
 import CardRoutes from '../../components/cards/CardRoutes'
 import CardVehicles from '../../components/cards/CardVehicles'
+import { RouteProvider } from '../../contexts/Table/route'
+import { VehicleProvider } from '../../contexts/Table/vehicle'
 
 export default function AdminDashboard() {
 
     return (
-        < >
+        <>
             <Head>
                 <title>Dashboard | Minha Rota</title>
             </Head>
@@ -21,16 +23,22 @@ export default function AdminDashboard() {
                         < CardExpenses />
                     </div>
                 </div>
-                <div className="flex-auto ">
-                    <div className="w-full mb-12 px-5">
-                        < CardRoutes />
+
+                <RouteProvider>
+                    <div className="flex-auto ">
+                        <div className="w-full mb-12 px-5">
+                            < CardRoutes />
+                        </div>
                     </div>
-                </div>
-                <div className="flex-auto">
-                    <div className="w-full mb-12 px-5">
-                        < CardVehicles />
+                </RouteProvider>
+
+                <VehicleProvider>
+                    <div className="flex-auto">
+                        <div className="w-full mb-12 px-5">
+                            < CardVehicles />
+                        </div>
                     </div>
-                </div>
+                </VehicleProvider>
                 <div className="flex-auto">
                     <div className="w-full mb-12 px-5">
                         < CardRide />

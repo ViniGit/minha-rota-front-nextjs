@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { RouteContext } from "../../../../contexts/Table/route"
+import { VehicleContext } from "../../../../contexts/Table/vehicle"
 
 interface PaginationItemProps {
     number: number,
@@ -13,7 +13,7 @@ function PaginationItem({ isCurrent = false, number, onPageChange }: PaginationI
     const [take, setTake] = useState<Number>(5)
     // const [skip, setSkip] = useState(0)
 
-    const { search, type, page, pageR } = useContext(RouteContext)
+    const { search, type, page, pageR } = useContext(VehicleContext)
 
     async function next() {
         await page(number)

@@ -1,7 +1,6 @@
 import { useContext, useState } from "react"
 
 import { RouteContext } from "../../contexts/Table/route"
-import Pagination from "./route/pagination"
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { BsTrash } from 'react-icons/bs'
@@ -13,13 +12,14 @@ import UserModel from "../../models/RouteModel"
 import { api } from "../../services/apiClient"
 import RouteModal from "../modals/route/RouteModal"
 import RouteModel from "../../models/RouteModel"
+import Pagination from "./route/pagination"
 
 
 function RouteTable() {
     const [page, setPage] = useState(1)
     const [open, setOpen] = useState(false)
     const [routeModel, setRouteModel] = useState<RouteModel>()
-    let { routes, count, pageR, handleDelete, setRouteEdit } = useContext(RouteContext)
+    let { routes, count, pageR, handleDelete } = useContext(RouteContext)
 
     function handleOpenModal(route: RouteModel) {
         setRouteModel(route)
@@ -27,8 +27,6 @@ function RouteTable() {
     }
 
     return (
-        console.log('open'),
-        console.log(open),
         <>
             {routes && routes.length > 0 ?
                 <div className="2xl:w-[1200px] xl:w-[900px] md:w-[800px] sm-[600px] test:w-[200px] mx-auto test:m-0 test:mt-4 p-10">
@@ -67,7 +65,7 @@ function RouteTable() {
                                 )}</td> */}
                                         <td key={route.id} className='text-gray-400 px-2 py-4'>
                                             <div className="flex gap-4 justify-center">
-                                                <Dialog.Root>
+                                                <Dialog.Root open={open} onOpenChange={setOpen}>
                                                     <Dialog.Trigger title="Editar" >
                                                         <div className='flex items-center  gap-2'>
                                                             <FiEdit className=" text-xl text-blue-400 hover:text-blue-600" onClick={() => handleOpenModal(route)} />
