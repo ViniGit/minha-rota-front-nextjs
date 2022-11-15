@@ -35,7 +35,7 @@ function RouteTable() {
                             <tr className="">
                                 <th className="p-4 dark:bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Destino</th>
                                 <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Distância (km)</th>
-                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Preço (R$)</th>
+                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Preço por Km (R$)</th>
                                 <th className="p-4 dark:bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Ações</th>
                             </tr>
                         </thead>

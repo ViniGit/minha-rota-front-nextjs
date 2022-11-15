@@ -20,6 +20,24 @@ function VehicleTable() {
         setVehicleModel(vehicle)
     }
 
+
+    function textTransform(type: string) {
+        switch (type) {
+            case 'microbus':
+                return 'Micro ônibus'
+            case 'bus':
+                return 'Ônibus'
+            case 'van':
+                return 'Van'
+            case 'minivan':
+                return 'Mini van'
+
+            default:
+                break;
+        }
+
+    }
+
     return (
         <>
             {vehicles && vehicles.length > 0 ?
@@ -40,13 +58,13 @@ function VehicleTable() {
 
                                         {index % 2 == 0 ? <>
                                             <td title="Placa" className='text-gray-400 px-8 py-4 font-bold'>{vehicle.plate}</td>
-                                            <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{vehicle.type}</td>
+                                            <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{textTransform(vehicle.type)}</td>
                                             <td title="Quilômetros por litro" className='text-gray-400 px-6 py-4 font-bold'>{vehicle.km_per_lt}</td>
 
                                         </> :
                                             <>
                                                 <td title="Placa" className='text-gray-400 px-8 py-4 font-bold'>{vehicle.plate}</td>
-                                                <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{vehicle.type}</td>
+                                                <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{textTransform(vehicle.type)}</td>
                                                 <td title="Quilômetros por litro" className='text-gray-400 px-6 py-4 font-bold'>{vehicle.km_per_lt}</td>
                                             </>}
 

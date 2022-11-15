@@ -153,14 +153,40 @@ export default function VehicleModal({ vehicle, open, setOpen }: propsModal) {
                                         >
                                             Tipo<span className='text-red-500'>*</span>
                                         </label>
-                                        <input
+                                        {/* <input
                                             id="type"
                                             type="text"
                                             className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
                                             value={formik.values.type}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                        />
+                                        /> */}
+
+
+                                        <select
+                                            id="type"
+                                            name="type"
+                                            value={formik.values.type}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className="w-full px-4 py-5 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
+                                        >
+                                            <option value="" label="Selecione o tipo">
+                                            </option>
+
+                                            <option value="microbus" label="Micro ônibus">
+                                            </option>
+
+                                            <option value="bus" label="Ônibus">
+                                            </option>
+
+                                            <option value="van" label="Van">
+                                            </option>
+
+                                            <option value="minivan" label="Mini van">
+                                            </option>
+
+                                        </select>
                                         {formik.touched.type && formik.errors.type ? <p className='text-red-500 text-xs mt-2'>{formik.errors.type}</p> : null}
 
                                     </div>
