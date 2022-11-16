@@ -62,18 +62,18 @@ function MyApp() {
                             </Link>
 
                             <Link href="/painel/vehicle">
-                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                    <GiCityCar className="text-2xl text-white group-hover:text-red-500 " />
-                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                <div className={router.pathname == '/painel/vehicle' ? "flex mb-2 justify-start items-center gap-4 pl-5 bg-gray-800 p-2 rounded-md group cursor-pointer shadow-lg m-auto" : "flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"}>
+                                    <GiCityCar className={router.pathname == '/painel/vehicle' ? "text-2xl text-red-500 " : "text-2xl text-white group-hover:text-red-500 "} />
+                                    <h3 className={router.pathname == '/painel/vehicle' ? "text-base text-red-500 font-semibold " : "text-base text-white group-hover:text-red-500 font-semibold "}>
                                         Veículos
                                     </h3>
                                 </div>
                             </Link>
 
                             <Link href="/painel/expense">
-                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                                    <GiTakeMyMoney className="text-2xl text-white group-hover:text-red-500 " />
-                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                <div className={router.pathname == '/painel/expense' ? "flex mb-2 justify-start items-center gap-4 pl-5 bg-gray-800 p-2 rounded-md group cursor-pointer shadow-lg m-auto" : "flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"}>
+                                    <GiTakeMyMoney className={router.pathname == '/painel/expense' ? "text-2xl text-red-500 " : "text-2xl text-white group-hover:text-red-500 "} />
+                                    <h3 className={router.pathname == '/painel/expense' ? "text-base text-red-500 font-semibold " : "text-base text-white group-hover:text-red-500 font-semibold "}>
                                         Despesas
                                     </h3>
                                 </div>

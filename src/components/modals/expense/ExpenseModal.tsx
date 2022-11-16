@@ -1,44 +1,39 @@
 import { ToastContainer } from 'react-toastify'
 import * as Dialog from '@radix-ui/react-dialog'
-import RouteModel from '../../../models/RouteModel'
-
-
-import { useState, useContext } from 'react'
-
+import { useContext } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { RouteContext } from '../../../contexts/Table/route'
 import { api } from '../../../services/apiClient'
 import { ToastifySuccess } from '../../../toastify/toastify-succes'
 import { ToastifyError } from '../../../toastify/toastify-error'
+import { VehicleContext } from '../../../contexts/Table/vehicle'
+import ExpenseModel from '../../../models/ExpenseModel'
 import CurrencyInput from 'react-currency-input-field'
+import { ExpenseContext } from '../../../contexts/Table/expense'
+
 interface propsModal {
-    route?: {
-        id?: string
-        destination?: string
-        distance?: number
-        price?: number
-    },
+    expense?: MyFormValues,
     open: Boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface MyFormValues {
     id?: string
-    destination?: string
-    distance?: number
-    price?: number
+    description?: string
+    type?: string
+    value?: number
 }
 
 
-export default function RouteModal({ route, open, setOpen }: propsModal) {
-    const { search } = useContext(RouteContext)
+export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
+    const { search } = useContext(ExpenseContext)
 
-    async function handleCreate(data: RouteModel) {
+
+    async function handleCreate(data: ExpenseModel) {
         try {
-            await api.post(`/route`, data).then(response => {
+            await api.post(`/expense`, data).then(response => {
                 if (response.status === 201) {
-                    ToastifySuccess('Trajeto cadastrado!')
+                    ToastifySuccess('Veículo cadastrado!')
                     search({ pageR: 0, take: 5 })
                     setOpen(false)
                     formik.resetForm()
@@ -56,11 +51,12 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
         }
     }
 
-    async function handleUpdate(data: RouteModel) {
+    async function handleUpdate(data: ExpenseModel) {
+        console.log(data)
         try {
-            await api.put(`/route/${data.id}`, data).then(response => {
+            await api.put(`/expense/${data.id}`, data).then(response => {
                 if (response.status === 201) {
-                    ToastifySuccess('Trajeto Atualizado!')
+                    ToastifySuccess('Despesa Atualizado!')
                     setOpen(false)
                     search({ pageR: 0, take: 5 })
                 }
@@ -77,7 +73,7 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
     }
 
 
-    async function handleSubmit(data: RouteModel) {
+    async function handleSubmit(data: ExpenseModel) {
         if (data?.id) {
             // is update
             handleUpdate(data)
@@ -87,32 +83,31 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
         }
     }
 
-    const initialValues: MyFormValues = { destination: '', distance: 0, price: 0.0 }
+    // const initialValues: MyFormValues = { plate: '', type: '', km_per_lt: 0.0 }
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            destination: route?.destination || '',
-            distance: route?.distance || '',
-            price: route?.price || '',
+            description: expense?.description || '',
+            type: expense?.type || '',
+            value: expense?.value || '',
         },
         validationSchema: Yup.object({
-            destination: Yup.string()
-                .max(50, 'Nome deve ter no máximo 20 caracteres.')
-                .min(5, 'Nome deve ter no minimo 5 caracteres.')
+            description: Yup.string()
+                .min(5, 'Descrição deve ter no minimo 5 caracteres.')
                 .required('Campo Obrigatório'),
-            distance: Yup.number().required('Distância é obrigatória'),
-            price: Yup.string().required('Preço é obrigatório')
+            type: Yup.string().required('Campo obrigatório'),
+            value: Yup.string().required('Campo obrigatório')
         }),
         onSubmit: (values) => {
 
-            values.price = values.price.toString().replace(",", ".")
+            values.value = values.value.toString().replace(",", ".")
 
             let data = {
-                destination: values.destination,
-                distance: values.distance,
-                price: Number(values.price),
-                id: route?.id
+                description: values.description,
+                type: values.type,
+                value: Number(values.value),
+                id: expense?.id
             }
             //@ts-ignore
             handleSubmit(data)
@@ -126,7 +121,7 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
                 <Dialog.Overlay className='bg-black/60 inset-0 fixed '>
                     <Dialog.Content className='bg-white fixed text-dark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[700px] px-10 py-8 shadow-black/25'>
                         <Dialog.Title className='text-xl'>
-                            Cadastro de Trajetos
+                            Cadastro de Despesa
                         </Dialog.Title>
                         <form
                             className='p-2'
@@ -139,18 +134,18 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
                                             className="block text-lg font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
-                                            Destino <span className='text-red-500'>*</span>
+                                            Descrição <span className='text-red-500'>*</span>
                                         </label>
                                         <input
-                                            id="destination"
+                                            id="description"
                                             type="text"
                                             // placeholder="Fazenda Berrante"
                                             className="w-full px-2 py-2 placeholder-gray-100 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
-                                            value={formik.values.destination}
+                                            value={formik.values.description}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                         />
-                                        {formik.touched.destination && formik.errors.destination ? <p className='text-red-500 text-xs mt-2'>{formik.errors.destination}</p> : null}
+                                        {formik.touched.description && formik.errors.description ? <p className='text-red-500 text-xs mt-2'>{formik.errors.description}</p> : null}
 
                                     </div>
 
@@ -160,17 +155,45 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
                                             className="block text-lg font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
-                                            Distância (KM) <span className='text-red-500'>*</span>
+                                            Tipo<span className='text-red-500'>*</span>
                                         </label>
-                                        <input
-                                            id="distance"
-                                            type="number"
+                                        {/* <input
+                                            id="type"
+                                            type="text"
                                             className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
-                                            value={formik.values.distance}
+                                            value={formik.values.type}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                        />
-                                        {formik.touched.distance && formik.errors.distance ? <p className='text-red-500 text-xs mt-2'>{formik.errors.distance}</p> : null}
+                                        /> */}
+
+
+                                        <select
+                                            id="type"
+                                            name="type"
+                                            value={formik.values.type}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className="w-full px-4 py-5 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
+                                        >
+                                            <option value="" label="Selecione o tipo">
+                                            </option>
+
+                                            <option value="mechanics" label="Mecânica">
+                                            </option>
+
+                                            <option value="driver" label="Motorista">
+                                            </option>
+
+                                            <option value="fuel" label="Combustível">
+                                            </option>
+
+                                            <option value="other" label="Outro">
+                                            </option>
+                                            {/* <option value="minivan" label="Mini van">
+                                            </option> */}
+
+                                        </select>
+                                        {formik.touched.type && formik.errors.type ? <p className='text-red-500 text-xs mt-2'>{formik.errors.type}</p> : null}
 
                                     </div>
                                 </div>
@@ -181,7 +204,7 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
                                             className="block text-lg font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
-                                            Preço por quilômetro<span className='text-red-500'>*</span>
+                                            Valor<span className='text-red-500'>*</span>
                                         </label>
 
                                         <CurrencyInput
@@ -193,26 +216,26 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
                                             defaultValue={1000}
                                             className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
                                             decimalsLimit={2}
-                                            value={formik.values.price}
+                                            value={formik.values.value}
                                             onBlur={formik.handleBlur}
                                             onValueChange={(value, name) => {
-                                                // console.log()
                                                 if (!value)
-                                                    formik.setFieldValue('price', '')
+                                                    formik.setFieldValue('value', '')
                                                 else
-                                                    formik.setFieldValue('price', String(value))
+                                                    formik.setFieldValue('value', String(value))
                                             }}
                                         />
-                                        {formik.touched.price && formik.errors.price ? <p className='text-red-500 text-xs mt-2'>{formik.errors.price}</p> : null}
                                         {/* <input
-                                            id="price"
+                                            id="value"
                                             type="number"
                                             className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
-                                            value={formik.values.price}
+                                            value={formik.values.value}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                        />
-                                         */}
+                                        /> */}
+
+                                        {formik.touched.value && formik.errors.value ? <p className='text-red-500 text-xs mt-2'>{formik.errors.value}</p> : null}
+
 
                                     </div>
                                 </div>

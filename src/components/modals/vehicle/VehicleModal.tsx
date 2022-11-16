@@ -117,7 +117,7 @@ export default function VehicleModal({ vehicle, open, setOpen }: propsModal) {
                 <Dialog.Overlay className='bg-black/60 inset-0 fixed '>
                     <Dialog.Content className='bg-white fixed text-dark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-[700px] px-10 py-8 shadow-black/25'>
                         <Dialog.Title className='text-xl'>
-                            Cadastro de Trajetos
+                            Cadastro de Veículo
                         </Dialog.Title>
                         <form
                             className='p-2'

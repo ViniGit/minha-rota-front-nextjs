@@ -70,7 +70,7 @@ export default function Login() {
                 <div className="mb-6">
                   <button type="submit" className="w-full px-3 py-4 text-white bg-red-500 rounded-md focus:bg-red-600 focus:outline-none">Entrar</button>
                 </div>
-                <Dialog.Root>
+                <Dialog.Root open={open} onOpenChange={setOpen}>
                   <Dialog.Trigger title="Editar" className="flex justify-between mb-3">
                     <div className='flex items-center gap-2'>
                       <p className='text-sm text-gray-400 focus:outline-none focus:text-red-500 hover:text-red-500 dark:hover:text-red-300'>Esqueceu sua senha?</p>

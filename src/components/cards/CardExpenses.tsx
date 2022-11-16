@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { GiTakeMyMoney } from 'react-icons/gi'
 import Link from "next/link";
+import { ExpenseContext } from "../../contexts/Table/expense";
 
 
-// components
+// components]
 
-export default function CardDashboard() {
+
+
+export default function CardExpense() {
+
+    let { count } = useContext(ExpenseContext)
+
     return (
         <>
             <Link href="/painel/expense">
@@ -16,7 +22,7 @@ export default function CardDashboard() {
                             aria-hidden="true"
                         />
                         <h5 className=" m-3 self-center text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Despesas</h5>
-                        <p className="m-3 self-center text-2xl text-red-500">30</p>
+                        <p className="m-3 self-center text-2xl text-red-500">{String(count)}</p>
                     </div>
                 </div>
             </Link>
