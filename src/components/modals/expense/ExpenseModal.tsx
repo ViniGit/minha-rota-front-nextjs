@@ -10,6 +10,7 @@ import { VehicleContext } from '../../../contexts/Table/vehicle'
 import ExpenseModel from '../../../models/ExpenseModel'
 import CurrencyInput from 'react-currency-input-field'
 import { ExpenseContext } from '../../../contexts/Table/expense'
+import { RouteContext } from '../../../contexts/Table/route'
 
 interface propsModal {
     expense?: MyFormValues,
@@ -20,14 +21,16 @@ interface propsModal {
 interface MyFormValues {
     id?: string
     description?: string
+    route_id?: string
     type?: string
     value?: number
 }
 
-
 export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
-    const { search } = useContext(ExpenseContext)
 
+    const { search } = useContext(ExpenseContext)
+    const { routes } = useContext(RouteContext)
+    console.log(expense)
 
     async function handleCreate(data: ExpenseModel) {
         try {
@@ -89,6 +92,7 @@ export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
         enableReinitialize: true,
         initialValues: {
             description: expense?.description || '',
+            route: expense?.route_id || '',
             type: expense?.type || '',
             value: expense?.value || '',
         },
@@ -97,6 +101,7 @@ export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
                 .min(5, 'Descrição deve ter no minimo 5 caracteres.')
                 .required('Campo Obrigatório'),
             type: Yup.string().required('Campo obrigatório'),
+            route: Yup.string().required('Campo obrigatório'),
             value: Yup.string().required('Campo obrigatório')
         }),
         onSubmit: (values) => {
@@ -105,6 +110,7 @@ export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
 
             let data = {
                 description: values.description,
+                route: values.route,
                 type: values.type,
                 value: Number(values.value),
                 id: expense?.id
@@ -127,6 +133,7 @@ export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
                             className='p-2'
                             onSubmit={formik.handleSubmit}
                         >
+
                             <div className="w-full gap-2 m-2">
                                 <div className='flex gap-3'>
                                     <div className="relative w-full mb-3">
@@ -147,6 +154,7 @@ export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
                                         />
                                         {formik.touched.description && formik.errors.description ? <p className='text-red-500 text-xs mt-2'>{formik.errors.description}</p> : null}
 
+
                                     </div>
 
                                     <div className="relative w-full mb-3">
@@ -155,50 +163,28 @@ export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
                                             className="block text-lg font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
-                                            Tipo<span className='text-red-500'>*</span>
+                                            Trajeto<span className='text-red-500'>*</span>
                                         </label>
-                                        {/* <input
-                                            id="type"
-                                            type="text"
-                                            className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
-                                            value={formik.values.type}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        /> */}
-
 
                                         <select
-                                            id="type"
-                                            name="type"
-                                            value={formik.values.type}
+                                            id="route"
+                                            value={formik.values.route}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             className="w-full px-4 py-5 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
                                         >
-                                            <option value="" label="Selecione o tipo">
-                                            </option>
-
-                                            <option value="mechanics" label="Mecânica">
-                                            </option>
-
-                                            <option value="driver" label="Motorista">
-                                            </option>
-
-                                            <option value="fuel" label="Combustível">
-                                            </option>
-
-                                            <option value="other" label="Outro">
-                                            </option>
-                                            {/* <option value="minivan" label="Mini van">
-                                            </option> */}
+                                            <option value='' label='Selecione um Trajeto'></option>
+                                            {routes && routes.map((route, index) => {
+                                                return <option key={route.id} value={route.id}>{route.destination}</option>
+                                            })}
 
                                         </select>
-                                        {formik.touched.type && formik.errors.type ? <p className='text-red-500 text-xs mt-2'>{formik.errors.type}</p> : null}
+                                        {formik.touched.route && formik.errors.route ? <p className='text-red-500 text-xs mt-2'>{formik.errors.route}</p> : null}
 
                                     </div>
                                 </div>
                                 <div className='flex gap-3'>
-                                    <div className="relative w-[50%] mb-3">
+                                    <div className="relative w-full mb-3">
 
                                         <label
                                             className="block text-lg font-thin mb-2 text-gray-400"
@@ -225,17 +211,44 @@ export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
                                                     formik.setFieldValue('value', String(value))
                                             }}
                                         />
-                                        {/* <input
-                                            id="value"
-                                            type="number"
-                                            className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
-                                            value={formik.values.value}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        /> */}
-
                                         {formik.touched.value && formik.errors.value ? <p className='text-red-500 text-xs mt-2'>{formik.errors.value}</p> : null}
 
+
+                                    </div>
+                                    <div className="relative w-full mb-3">
+
+                                        <label
+                                            className="block text-lg font-thin mb-2 text-gray-400"
+                                            htmlFor="grid-password"
+                                        >
+                                            Tipo<span className='text-red-500'>*</span>
+                                        </label>
+
+                                        <select
+                                            id="type"
+                                            name="type"
+                                            value={formik.values.type}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            className="w-full px-4 py-5 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
+                                        >
+                                            <option value="" label="Selecione o tipo">
+                                            </option>
+
+                                            <option value="mechanics" label="Mecânica">
+                                            </option>
+
+                                            <option value="driver" label="Motorista">
+                                            </option>
+
+                                            <option value="fuel" label="Combustível">
+                                            </option>
+
+                                            <option value="other" label="Outro">
+                                            </option>
+
+                                        </select>
+                                        {formik.touched.type && formik.errors.type ? <p className='text-red-500 text-xs mt-2'>{formik.errors.type}</p> : null}
 
                                     </div>
                                 </div>

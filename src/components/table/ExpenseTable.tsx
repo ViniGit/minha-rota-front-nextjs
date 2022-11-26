@@ -10,6 +10,7 @@ import Pagination from "./expense/pagination"
 import { ExpenseContext } from "../../contexts/Table/expense"
 import ExpenseModel from "../../models/ExpenseModel"
 import ExpenseModal from "../modals/expense/ExpenseModal"
+import { RouteProvider } from "../../contexts/Table/route"
 
 function ExpenseTable() {
     const [page, setPage] = useState(1)
@@ -82,7 +83,9 @@ function ExpenseTable() {
                                                             <FiEdit className=" text-xl text-blue-400 hover:text-blue-600" onClick={() => handleOpenModal(expense)} />
                                                         </div>
                                                     </Dialog.Trigger>
-                                                    <ExpenseModal expense={expenseModel} open={open} setOpen={setOpen} />
+                                                    <RouteProvider>
+                                                        <ExpenseModal expense={expenseModel} open={open} setOpen={setOpen} />
+                                                    </RouteProvider>
                                                 </Dialog.Root>
                                                 <button title="Deletar" onClick={() => handleDelete(expense)}><BsTrash className="text-xl text-red-400 hover:text-red-600" /></button>
                                             </div>

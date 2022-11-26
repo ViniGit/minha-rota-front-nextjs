@@ -16,20 +16,13 @@ interface propsModal {
     route?: {
         id?: string
         destination?: string
+        description?: string
         distance?: number
         price?: number
     },
     open: Boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
-
-interface MyFormValues {
-    id?: string
-    destination?: string
-    distance?: number
-    price?: number
-}
-
 
 export default function RouteModal({ route, open, setOpen }: propsModal) {
     const { search } = useContext(RouteContext)
@@ -87,12 +80,12 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
         }
     }
 
-    const initialValues: MyFormValues = { destination: '', distance: 0, price: 0.0 }
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
             destination: route?.destination || '',
+            description: route?.description || '',
             distance: route?.distance || '',
             price: route?.price || '',
         },
@@ -102,6 +95,7 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
                 .min(5, 'Nome deve ter no minimo 5 caracteres.')
                 .required('Campo Obrigatório'),
             distance: Yup.number().required('Distância é obrigatória'),
+            description: Yup.string().required('Distância é obrigatória'),
             price: Yup.string().required('Preço é obrigatório')
         }),
         onSubmit: (values) => {
@@ -110,6 +104,7 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
 
             let data = {
                 destination: values.destination,
+                description: values.description,
                 distance: values.distance,
                 price: Number(values.price),
                 id: route?.id
@@ -154,29 +149,9 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
 
                                     </div>
 
-                                    <div className="relative w-full mb-3">
-
-                                        <label
-                                            className="block text-lg font-thin mb-2 text-gray-400"
-                                            htmlFor="grid-password"
-                                        >
-                                            Distância (KM) <span className='text-red-500'>*</span>
-                                        </label>
-                                        <input
-                                            id="distance"
-                                            type="number"
-                                            className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
-                                            value={formik.values.distance}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        />
-                                        {formik.touched.distance && formik.errors.distance ? <p className='text-red-500 text-xs mt-2'>{formik.errors.distance}</p> : null}
-
-                                    </div>
                                 </div>
                                 <div className='flex gap-3'>
-                                    <div className="relative w-[50%] mb-3">
-
+                                    <div className="relative w-full mb-3">
                                         <label
                                             className="block text-lg font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
@@ -214,6 +189,45 @@ export default function RouteModal({ route, open, setOpen }: propsModal) {
                                         />
                                          */}
 
+                                    </div>
+                                    <div className="relative w-full mb-3">
+
+                                        <label
+                                            className="block text-lg font-thin mb-2 text-gray-400"
+                                            htmlFor="grid-password"
+                                        >
+                                            Distância (KM) <span className='text-red-500'>*</span>
+                                        </label>
+                                        <input
+                                            id="distance"
+                                            type="number"
+                                            className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
+                                            value={formik.values.distance}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                        {formik.touched.distance && formik.errors.distance ? <p className='text-red-500 text-xs mt-2'>{formik.errors.distance}</p> : null}
+
+                                    </div>
+                                </div>
+
+                                <div className='flex gap-3'>
+
+                                    <div className="relative w-full mb-3">
+                                        <label
+                                            className="block text-lg font-thin mb-2 text-gray-400"
+                                            htmlFor="grid-password"
+                                        >
+                                            Descrição<span className='text-red-500'>*</span>
+                                        </label>
+                                        <textarea
+                                            id="description"
+                                            className="w-full px-2 py-2 placeholder-gray-400 border border-gray-300 rounded-xl focus:outline-none dark:focus:border-gray-600 dark:text-gray-500 dark:placeholder-gray-500 white:border-gray-600"
+                                            value={formik.values.description}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                        {formik.touched.description && formik.errors.description ? <p className='text-red-500 text-xs mt-2'>{formik.errors.description}</p> : null}
                                     </div>
                                 </div>
                             </div>

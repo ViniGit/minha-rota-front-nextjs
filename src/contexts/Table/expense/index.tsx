@@ -6,6 +6,7 @@ import { ToastifySuccess } from "../../../toastify/toastify-succes"
 interface ExpenseProps {
     id: string
     description: string
+    route_id: string
     type: string
     value: number
 }
@@ -50,6 +51,7 @@ export function ExpenseProvider({ children }: ExpenseProviderProps) {
         )
             .then(response => {
                 console.log(response.data.count)
+                console.log(response.data.expense)
                 setExpenses(response.data.expense)
                 setCount(response.data.count)
             })

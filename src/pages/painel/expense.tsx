@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import { ExpenseProvider } from '../../contexts/Table/expense'
 import ExpenseTable from '../../components/table/ExpenseTable'
 import ExpenseModal from '../../components/modals/expense/ExpenseModal'
+import { RouteProvider } from '../../contexts/Table/route'
 
 
 export default function Expense() {
@@ -33,7 +34,9 @@ export default function Expense() {
                                     <p className='font-semibold' >Cadastrar Despesa</p>
                                 </div>
                             </Dialog.Trigger>
-                            <ExpenseModal open={open} setOpen={setOpen} />
+                            <RouteProvider>
+                                <ExpenseModal open={open} setOpen={setOpen} />
+                            </RouteProvider>
                         </Dialog.Root>
                     </div>
                     <div className="relative flex w-11/12 flex-col min-w-0 break-words mb-6 shadow-lg rounded-xl border-0 bg-dark bg-white mx-auto mt-2">

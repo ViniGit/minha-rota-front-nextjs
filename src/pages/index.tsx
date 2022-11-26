@@ -44,7 +44,7 @@ export default function Login() {
       <Head>
         <title>Login | Minha Rota</title>
       </Head>
-      <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">
+      <div className="flex items-center min-h-screen bg-gray-900 dark:bg-gray-900">
         <div className="container mx-auto">
           <div className="max-w-md mx-auto my-10">
             <div className="text-center">
@@ -52,7 +52,7 @@ export default function Login() {
               <p className="text-gray-500 dark:text-gray-400">Entre para acessar sua conta</p>
             </div>
             <div className="m-7">
-              <form onSubmit={formik.handleSubmit}>
+              <form onSubmit={formik.handleSubmit} className="form-dark">
                 <div className="mb-6">
                   <label className="block mb-2 text-sm text-gray-600 dark:text-gray-400">E-mail</label>
                   <input type="email" name="email" id="email" placeholder="Ex. joaodasilva@gmail.com" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} className="teste w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />

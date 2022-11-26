@@ -45,7 +45,7 @@ function RouteTable() {
                                     <tr key={route.id} className={index % 2 == 0 ? "border-t-2 border-b-2" : "border-t-2 border-b-2 bg-gray-200"}>
 
                                         {index % 2 == 0 ? <>
-                                            <td title="Destino" className='text-gray-400 px-8 py-4 font-bold'>{route.destination}</td>
+                                            <td title={route.description} className='text-gray-400 px-8 py-4 font-bold'>{route.destination}</td>
                                             <td title="Distância" className='text-gray-400 px-6 py-4 font-bold'>{route.distance}</td>
                                             <td title="Preço" className='text-gray-400 px-6 py-4 font-bold'>{new Intl.NumberFormat('pt-BR', {
                                                 style: 'currency',
@@ -53,7 +53,7 @@ function RouteTable() {
                                             }).format(route.price)}</td>
                                         </> :
                                             <>
-                                                <td title="Destino" className='text-gray-900 px-8 py-4 font-bold'>{route.destination}</td>
+                                                <td title={route.description} className='text-gray-900 px-8 py-4 font-bold'>{route.destination}</td>
                                                 <td title="Distância" className='text-gray-900 px-6 py-4 font-bold'>{route.distance}</td>
                                                 <td title="Preço" className='text-gray-400 px-6 py-4 font-bold'>{new Intl.NumberFormat('pt-BR', {
                                                     style: 'currency',

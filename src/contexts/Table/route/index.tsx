@@ -6,6 +6,7 @@ import { ToastifySuccess } from "../../../toastify/toastify-succes"
 interface RoutesProps {
     id: string
     destination: string
+    description: string
     distance: number
     price: number
 }

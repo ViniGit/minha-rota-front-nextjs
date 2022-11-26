@@ -97,7 +97,7 @@ const SignUp: NextPage = () => {
                             <p className="text-base text-white">Já possui cadastro?</p>
                         </a>
                     </section>
-                    <form className="flex-auto w-3/6 p-5" onSubmit={formik.handleSubmit}>
+                    <form className="flex-auto w-3/6 p-5 form-dark" onSubmit={formik.handleSubmit}>
 
                         <div className="m-4">
                             <input id="name" placeholder="Nome" type="text" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
@@ -132,7 +132,7 @@ const SignUp: NextPage = () => {
                         <div className="m-4">
 
                             <ReactDatePicker
-                                className='w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
+                                className='input-mask w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
                                 locale={ptBR}
                                 selected={startDate}
                                 onChange={(date: Date) => setStartDate(date)}
