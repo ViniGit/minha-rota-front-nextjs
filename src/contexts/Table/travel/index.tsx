@@ -91,7 +91,7 @@ export function TravelProvider({ children }: TravelProvaiderProps) {
                 .then(response => {
                     console.log(response)
                     if (response.status == 200)
-                        ToastifySuccess('Trajeto excluído!')
+                        ToastifySuccess('Viagem excluída!')
                 }).catch(err => {
                     console.log(err)
                 })
@@ -114,7 +114,7 @@ export function TravelProvider({ children }: TravelProvaiderProps) {
                 skip: take * pageR
             }
         })
-        setTravels(response.data.travels)
+        setTravels(response.data.travel)
         setCount(response.data.count)
 
     }

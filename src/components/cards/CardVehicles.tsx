@@ -1,35 +1,11 @@
 import Link from "next/link";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { GiPathDistance, GiCityCar } from 'react-icons/gi'
+import React, { useContext, useState } from "react";
+import { GiCityCar } from 'react-icons/gi'
 import { VehicleContext } from "../../contexts/Table/vehicle";
-import { api } from "../../services/apiClient";
-
-
-// components
 
 export default function CardVehicles() {
 
-    const [countRoute, setCountRoute] = useState<Number>(0)
-
     let { count } = useContext(VehicleContext)
-
-
-    // const fetchData = useCallback(async () => {
-    //     await api.get('/dashboard/vehicles').then(response => {
-    //         const routesQuantity = response.data
-    //         setCountRoute(routesQuantity)
-
-    //     }).catch((err) => {
-    //         console.error(err)
-    //     })
-    // }, [])
-
-    // useEffect(() => {
-    //     fetchData()
-    //         .catch(console.error)
-
-    // }, [fetchData])
-
 
     return (
         <>

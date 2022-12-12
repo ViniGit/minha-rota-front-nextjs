@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 
-import { RouteContext } from "../../contexts/Table/route"
+import { RouteContext, RouteProvider } from "../../contexts/Table/route"
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { BsTrash } from 'react-icons/bs'
@@ -8,10 +8,12 @@ import { FiEdit } from 'react-icons/fi'
 import { GoAlert } from 'react-icons/go'
 import RouteModal from "../modals/route/RouteModal"
 import RouteModel from "../../models/RouteModel"
-import Pagination from "./route/pagination"
+import Pagination from "./travel/pagination"
 import { TravelContext } from "../../contexts/Table/travel"
 import TravelModal from "../modals/travel/TravelModal"
 import TravelModel from "../../models/TravelModel"
+import { format } from "../../utils/formatData"
+import { VehicleProvider } from "../../contexts/Table/vehicle"
 
 function textTransform(type: string) {
     switch (type) {
@@ -37,8 +39,8 @@ function TravelTable() {
     const [travelModel, setTravelModel] = useState<TravelModel>()
     let { travels, count, pageR, handleDelete } = useContext(TravelContext)
 
-    function handleOpenModal(route: TravelModel) {
-        setTravelModel(route)
+    function handleOpenModal(travel: TravelModel) {
+        setTravelModel(travel)
         setOpen(false)
     }
 
@@ -49,9 +51,10 @@ function TravelTable() {
                     <table className='bg-white w-full rounded-2xl'>
                         <thead >
                             <tr className="">
-                                <th className="p-4 dark:bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Destino</th>
-                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Trajeto</th>
+                                <th className="p-4 dark:bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Viagem</th>
                                 <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Veículo</th>
+                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Trajeto</th>
+                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Data</th>
                                 <th className="p-4 dark:bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Ações</th>
                             </tr>
                         </thead>
@@ -62,12 +65,18 @@ function TravelTable() {
 
                                         {index % 2 == 0 ? <>
                                             {/* <td title={travel.description} className='text-gray-400 px-8 py-4 font-bold'>{travel.description}</td> */}
-                                            <td className='text-gray-400 px-8 py-4 font-bold'>{travel.route.destination}</td>
+                                            <td className='text-gray-400 px-8 py-4 font-bold'>{travel.id}</td>
                                             <td className='text-gray-400 px-8 py-4 font-bold'>{textTransform(travel.vehicle.type)}</td>
+                                            <td className='text-gray-400 px-8 py-4 font-bold'>{travel.route.destination}</td>
+                                            <td className='text-gray-400 px-8 py-4 font-bold'>{format(travel.date)}</td>
 
                                         </> :
                                             <>
-                                                <td title={travel.description} className='text-gray-900 px-8 py-4 font-bold'>{travel.description}</td>
+                                                <td className='text-gray-400 px-8 py-4 font-bold'>{travel.id}</td>
+                                                <td className='text-gray-400 px-8 py-4 font-bold'>{textTransform(travel.vehicle.type)}</td>
+                                                <td className='text-gray-400 px-8 py-4 font-bold'>{travel.route.destination}</td>
+                                                <td className='text-gray-400 px-8 py-4 font-bold'>{format(travel.date)}</td>
+                                                {/* <td title={travel.description} className='text-gray-900 px-8 py-4 font-bold'>{travel.description}</td> */}
 
                                             </>}
                                         {/* <td className='text-[#C4C4CC] px-8 py-4'>{new Intl.DateTimeFormat('pt-BR').format(
@@ -75,15 +84,19 @@ function TravelTable() {
                                 )}</td> */}
                                         <td key={travel.id} className='text-gray-400 px-2 py-4'>
                                             <div className="flex gap-4 justify-center">
-                                                <Dialog.Root open={open} onOpenChange={setOpen}>
+                                                <Dialog.Root open={open && travel.id == travelModel?.id} onOpenChange={setOpen}>
                                                     <Dialog.Trigger title="Editar" >
                                                         <div className='flex items-center  gap-2'>
                                                             <FiEdit className=" text-xl text-blue-400 hover:text-blue-600" onClick={() => handleOpenModal(travel)} />
                                                         </div>
                                                     </Dialog.Trigger>
-                                                    {/* <TravelModal travel={travelModel} open={open} setOpen={setOpen} /> */}
+                                                    <RouteProvider>
+                                                        <VehicleProvider>
+                                                            <TravelModal travel={travelModel} setOpen={setOpen} />
+                                                        </VehicleProvider>
+                                                    </RouteProvider>
                                                 </Dialog.Root>
-                                                {/* <button title="Deletar" onClick={() => handleDelete(travel)}><BsTrash className="text-xl text-red-400 hover:text-red-600" /></button> */}
+                                                <button title="Deletar" onClick={() => handleDelete(travel)}><BsTrash className="text-xl text-red-400 hover:text-red-600" /></button>
                                             </div>
 
                                         </td>

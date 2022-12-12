@@ -3,11 +3,6 @@ import { GiTakeMyMoney } from 'react-icons/gi'
 import Link from "next/link";
 import { ExpenseContext } from "../../contexts/Table/expense";
 
-
-// components]
-
-
-
 export default function CardExpense() {
 
     let { count } = useContext(ExpenseContext)

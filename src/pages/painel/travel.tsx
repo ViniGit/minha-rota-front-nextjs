@@ -1,15 +1,11 @@
 
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import * as Dialog from '@radix-ui/react-dialog'
 
 
 import Admin from "."
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useState } from 'react';
 import { MdAddCircleOutline } from 'react-icons/md'
-import RouteModal from '../../components/modals/route/RouteModal'
-import RouteTable from '../../components/table/RouteTable'
 import { ToastContainer } from 'react-toastify'
 import { TravelProvider } from '../../contexts/Table/travel'
 import TravelModal from '../../components/modals/travel/TravelModal'
@@ -20,9 +16,8 @@ import TravelTable from '../../components/table/TravelTable'
 
 export default function Travel() {
 
-    const [color, setColor] = useState('blue');
-
     const [open, setOpen] = useState(false)
+    console.log(open)
 
     return (
         <TravelProvider>
@@ -44,7 +39,7 @@ export default function Travel() {
                             </Dialog.Trigger>
                             <RouteProvider>
                                 <VehicleProvider>
-                                    <TravelModal open={open} setOpen={setOpen} />
+                                    <TravelModal setOpen={setOpen} />
                                 </VehicleProvider>
                             </RouteProvider>
                         </Dialog.Root>

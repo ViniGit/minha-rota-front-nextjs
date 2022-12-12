@@ -4,11 +4,12 @@ import Head from 'next/head'
 
 import Admin from "."
 import CardExpenses from '../../components/cards/CardExpenses'
-import CardRide from '../../components/cards/CardRide'
 import CardRoutes from '../../components/cards/CardRoutes'
+import CardTravels from '../../components/cards/CardTravels'
 import CardVehicles from '../../components/cards/CardVehicles'
 import { ExpenseProvider } from '../../contexts/Table/expense'
 import { RouteProvider } from '../../contexts/Table/route'
+import { TravelProvider } from '../../contexts/Table/travel'
 import { VehicleProvider } from '../../contexts/Table/vehicle'
 
 export default function AdminDashboard() {
@@ -42,11 +43,13 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                 </VehicleProvider>
-                <div className="flex-auto">
-                    <div className="w-full mb-12 px-5">
-                        < CardRide />
+                <TravelProvider>
+                    <div className="flex-auto">
+                        <div className="w-full mb-12 px-5">
+                            < CardTravels />
+                        </div>
                     </div>
-                </div>
+                </TravelProvider>
             </div>
         </>
     )

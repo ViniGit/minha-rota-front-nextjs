@@ -1,10 +1,8 @@
 import Link from "next/link";
-import React, { useCallback, useEffect, useState, useContext } from "react";
-import { GiPathDistance, GiTakeMyMoney } from 'react-icons/gi'
-import { RouteContext, RouteProvider } from "../../contexts/Table/route";
-import { api } from "../../services/apiClient";
+import React, { useContext } from "react";
+import { GiPathDistance } from 'react-icons/gi'
+import { RouteContext } from "../../contexts/Table/route";
 
-// components
 export default function CardRoutes() {
 
     let { count } = useContext(RouteContext)

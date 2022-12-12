@@ -1,36 +1,25 @@
 import { ToastContainer } from 'react-toastify'
 import * as Dialog from '@radix-ui/react-dialog'
 import RouteModel from '../../../models/RouteModel'
-
-
 import { useState, useContext } from 'react'
-
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { RouteContext } from '../../../contexts/Table/route'
 import { api } from '../../../services/apiClient'
 import { ToastifySuccess } from '../../../toastify/toastify-succes'
 import { ToastifyError } from '../../../toastify/toastify-error'
-import CurrencyInput from 'react-currency-input-field'
-import VehicleModel from '../../../models/VehicleModel'
 import { VehicleContext } from '../../../contexts/Table/vehicle'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import ptBR from 'date-fns/locale/pt-BR'
 import MaskedInput from 'react-maskedinput'
+import { TravelContext } from '../../../contexts/Table/travel'
+import TravelModel from '../../../models/TravelModel'
+// import { getFirstDayOfMonth, getLastDayOfMonth } from '../../../utils/formatData'
 registerLocale('ptBR', ptBR)
 
 
 interface propsModal {
-    travel?: {
-        id?: string
-        description?: string
-        travels?: number
-        user_id?: string
-        route?: string
-        vehicle?: string
-        date?: Date
-    },
-    open: Boolean,
+    travel?: TravelModel,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -50,12 +39,32 @@ function textTransform(type: string) {
     }
 }
 
-export default function TravelModal({ travel, open, setOpen }: propsModal) {
-    const { search, routes } = useContext(RouteContext)
-    const { vehicles } = useContext(VehicleContext)
-    const [startDate, setStartDate] = useState(new Date())
+// function valdiateDate(date: Date) {
+//     let firstDayOfMonth = getFirstDayOfMonth()
+//     let lastDayOfMonth = getLastDayOfMonth(new Date())
 
-    async function handleCreate(data: RouteModel) {
+//     if (date >= firstDayOfMonth && date <= lastDayOfMonth) {
+//         return true
+//     }
+//     else {
+//         return false
+
+//     }
+// }
+
+
+
+export default function TravelModal({ travel, setOpen }: propsModal) {
+    const { routes } = useContext(RouteContext)
+    const { search } = useContext(TravelContext)
+    const { vehicles } = useContext(VehicleContext)
+
+    console.log('vehicles')
+    console.log(vehicles)
+
+    const [date, setDate] = useState(new Date())
+
+    async function handleCreate(data: TravelModel) {
         try {
             await api.post(`/travel`, data).then(response => {
                 if (response.status === 201) {
@@ -77,7 +86,7 @@ export default function TravelModal({ travel, open, setOpen }: propsModal) {
         }
     }
 
-    async function handleUpdate(data: RouteModel) {
+    async function handleUpdate(data: TravelModel) {
         try {
             await api.put(`/travel/${data.id}`, data).then(response => {
                 if (response.status === 201) {
@@ -97,8 +106,7 @@ export default function TravelModal({ travel, open, setOpen }: propsModal) {
         }
     }
 
-
-    async function handleSubmit(data: RouteModel) {
+    async function handleSubmit(data: TravelModel) {
         if (data?.id) {
             // is update
             handleUpdate(data)
@@ -108,42 +116,34 @@ export default function TravelModal({ travel, open, setOpen }: propsModal) {
         }
     }
 
-
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
             description: travel?.description,
-            travels: travel?.travels,
-            route: travel?.route,
-            vehicle: travel?.vehicle,
-            date: '',
+            travels: travel?.travels || 2,
+            route: travel?.route.id,
+            vehicle: travel?.vehicle.id,
         },
         validationSchema: Yup.object({
-            // destination: Yup.string()
-            //     .max(50, 'Nome deve ter no máximo 20 caracteres.')
-            //     .min(5, 'Nome deve ter no minimo 5 caracteres.')
-            //     .required('Campo Obrigatório'),
             vehicle: Yup.string().required('Veículo é obrigatório'),
             route: Yup.string().required('Trajeto é obrigatório'),
             travels: Yup.number().required('Qtd. de viagens é obrigatório'),
-            // date: Yup.string().required('Data obrigatória'),
+            description: Yup.string().required('Descrição é obrigatória')
         }),
         onSubmit: (values) => {
-            // values.price = values.price.toString().replace(",", ".")
-            if(!startDate) return 
+            if (!date) return
 
             let data = {
                 description: values.description,
                 travels: Number(values.travels),
                 route: values.route,
                 vehicle: values.vehicle,
-                date: startDate.toISOString()
+                date: date.toISOString(),
+                id: travel?.id
             }
-
-            console.log(data)
-
             //@ts-ignore
             handleSubmit(data)
+
         },
     })
 
@@ -260,14 +260,15 @@ export default function TravelModal({ travel, open, setOpen }: propsModal) {
                                             id="date"
                                             className='input-mask w-full px-3 py-2 placeholder-gray-700 border border-gray-700 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-white dark:text-gray-700 dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
                                             locale={ptBR}
-                                            selected={startDate}
-                                            onChange={(date: Date) => setStartDate(date)}
+                                            selected={date}
+                                            onChange={(date: Date) => setDate(date)}
                                             dateFormat="dd/MM/yyyy"
                                             customInput={
                                                 <MaskedInput mask="11/11/1111" placeholder="dd/mm/yyyy" />
                                             }
                                         />
-                                        { !startDate ? <p className='text-red-500 text-xs mt-2'>Data é obrigatória!</p> : null}
+                                        {!date ? <p className='text-red-500 text-xs mt-2'>Data é obrigatória!</p> : null}
+                                        {/* {showError ? <p className='text-red-500 text-xs mt-2'>Só pode registrar viagens no mês recorrente!</p> : null} */}
 
                                     </div>
                                 </div>
@@ -279,7 +280,7 @@ export default function TravelModal({ travel, open, setOpen }: propsModal) {
                                             className="block text-lg font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
-                                            Descrição
+                                            Descrição<span className='text-red-500'>*</span>
                                         </label>
                                         <textarea
                                             id="description"
@@ -288,6 +289,8 @@ export default function TravelModal({ travel, open, setOpen }: propsModal) {
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                         />
+                                        {formik.touched.description && formik.errors.description ? <p className='text-red-500 text-xs mt-2'>{formik.errors.description}</p> : null}
+
                                     </div>
                                 </div>
                             </div>
