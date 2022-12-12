@@ -11,7 +11,6 @@ import VehicleModel from '../../../models/VehicleModel'
 
 interface propsModal {
     vehicle?: MyFormValues,
-    open: Boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -23,7 +22,7 @@ interface MyFormValues {
 }
 
 
-export default function VehicleModal({ vehicle, open, setOpen }: propsModal) {
+export default function VehicleModal({ vehicle, setOpen }: propsModal) {
     const { search } = useContext(VehicleContext)
 
 

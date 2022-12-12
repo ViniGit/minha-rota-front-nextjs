@@ -20,11 +20,10 @@ interface propsModal {
         distance?: number
         price?: number
     },
-    open: Boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function RouteModal({ route, open, setOpen }: propsModal) {
+export default function RouteModal({ route, setOpen }: propsModal) {
     const { search } = useContext(RouteContext)
 
     async function handleCreate(data: RouteModel) {

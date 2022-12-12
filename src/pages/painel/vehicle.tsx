@@ -1,14 +1,9 @@
-
-import type { NextPage } from 'next'
 import Head from 'next/head'
-
-
 import Admin from "."
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useState } from 'react';
 import { VehicleProvider } from '../../contexts/Table/vehicle';
 import * as Dialog from '@radix-ui/react-dialog'
-import { MdAddCircleOutline } from 'react-icons/md';
+import { IoMdAdd } from 'react-icons/io'
 import { ToastContainer } from 'react-toastify';
 import VehicleModal from '../../components/modals/vehicle/VehicleModal';
 import VehicleTable from '../../components/table/VehicleTable';
@@ -27,16 +22,16 @@ export default function Vehicle() {
                 <div className='p-8 w-full content-center'>
                     <div className=" relative m-2 flex w-11/12 justify-end mx-auto mb-5">
                         <Dialog.Root open={open} onOpenChange={setOpen}>
-                            <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-blue-500 rounded-md focus:bg-blue-600 focus:outline-none">
+                            <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-gray-900 rounded-md hover:bg-gray-600 hover:outline-none">
                                 <div className='flex items-center  gap-2'>
-                                    <MdAddCircleOutline
+                                    <IoMdAdd
                                         className=" h-5 w-5 text-white"
                                         aria-hidden="true"
                                     />
                                     <p className='font-semibold' >Cadastrar Veículo</p>
                                 </div>
                             </Dialog.Trigger>
-                            <VehicleModal open={open} setOpen={setOpen} />
+                            <VehicleModal setOpen={setOpen} />
                         </Dialog.Root>
                     </div>
                     <div className="relative flex w-11/12 flex-col min-w-0 break-words mb-6 shadow-lg rounded-xl border-0 bg-dark bg-white mx-auto mt-2">

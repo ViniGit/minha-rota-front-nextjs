@@ -65,13 +65,13 @@ function RouteTable() {
                                 )}</td> */}
                                         <td key={route.id} className='text-gray-400 px-2 py-4'>
                                             <div className="flex gap-4 justify-center">
-                                                <Dialog.Root open={open} onOpenChange={setOpen}>
+                                                <Dialog.Root open={open && route.id == routeModel?.id} onOpenChange={setOpen}>
                                                     <Dialog.Trigger title="Editar" >
                                                         <div className='flex items-center  gap-2'>
                                                             <FiEdit className=" text-xl text-blue-400 hover:text-blue-600" onClick={() => handleOpenModal(route)} />
                                                         </div>
                                                     </Dialog.Trigger>
-                                                    <RouteModal route={routeModel} open={open} setOpen={setOpen} />
+                                                    <RouteModal route={routeModel} setOpen={setOpen} />
                                                 </Dialog.Root>
                                                 <button title="Deletar" onClick={() => handleDelete(route)}><BsTrash className="text-xl text-red-400 hover:text-red-600" /></button>
                                             </div>

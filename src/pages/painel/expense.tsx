@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Admin from "."
 import { useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
-import { MdAddCircleOutline } from 'react-icons/md'
+import { IoMdAdd } from 'react-icons/io'
 import { ToastContainer } from 'react-toastify'
 import { ExpenseProvider } from '../../contexts/Table/expense'
 import ExpenseTable from '../../components/table/ExpenseTable'
@@ -25,9 +25,9 @@ export default function Expense() {
                 <div className='p-8 w-full content-center'>
                     <div className=" relative m-2 flex w-11/12 justify-end mx-auto mb-5">
                         <Dialog.Root open={open} onOpenChange={setOpen}>
-                            <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-blue-500 rounded-md focus:bg-blue-600 focus:outline-none">
+                            <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-gray-900 rounded-md hover:bg-gray-600 hover:outline-none">
                                 <div className='flex items-center  gap-2'>
-                                    <MdAddCircleOutline
+                                    <IoMdAdd
                                         className=" h-5 w-5 text-white"
                                         aria-hidden="true"
                                     />
@@ -35,7 +35,7 @@ export default function Expense() {
                                 </div>
                             </Dialog.Trigger>
                             <RouteProvider>
-                                <ExpenseModal open={open} setOpen={setOpen} />
+                                <ExpenseModal setOpen={setOpen} />
                             </RouteProvider>
                         </Dialog.Root>
                     </div>

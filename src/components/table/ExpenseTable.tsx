@@ -76,14 +76,14 @@ function ExpenseTable() {
 
                                         <td key={expense.id} className='text-gray-400 px-2 py-4'>
                                             <div className="flex gap-4 justify-center">
-                                                <Dialog.Root open={open} onOpenChange={setOpen}>
+                                                <Dialog.Root open={open && expense.id == expenseModel?.id} onOpenChange={setOpen}>
                                                     <Dialog.Trigger title="Editar" >
                                                         <div className='flex items-center  gap-2'>
                                                             <FiEdit className=" text-xl text-blue-400 hover:text-blue-600" onClick={() => handleOpenModal(expense)} />
                                                         </div>
                                                     </Dialog.Trigger>
                                                     <RouteProvider>
-                                                        <ExpenseModal expense={expenseModel} open={open} setOpen={setOpen} />
+                                                        <ExpenseModal expense={expenseModel} setOpen={setOpen} />
                                                     </RouteProvider>
                                                 </Dialog.Root>
                                                 <button title="Deletar" onClick={() => handleDelete(expense)}><BsTrash className="text-xl text-red-400 hover:text-red-600" /></button>

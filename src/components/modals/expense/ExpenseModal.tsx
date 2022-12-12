@@ -13,7 +13,6 @@ import { RouteContext } from '../../../contexts/Table/route'
 
 interface propsModal {
     expense?: MyFormValues,
-    open: Boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -25,7 +24,7 @@ interface MyFormValues {
     value?: number
 }
 
-export default function ExpenseModal({ expense, open, setOpen }: propsModal) {
+export default function ExpenseModal({ expense, setOpen }: propsModal) {
 
     const { search } = useContext(ExpenseContext)
     const { routes } = useContext(RouteContext)

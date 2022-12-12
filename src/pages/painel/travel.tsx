@@ -5,7 +5,8 @@ import * as Dialog from '@radix-ui/react-dialog'
 
 import Admin from "."
 import { useState } from 'react';
-import { MdAddCircleOutline } from 'react-icons/md'
+import { IoMdAdd } from 'react-icons/io'
+
 import { ToastContainer } from 'react-toastify'
 import { TravelProvider } from '../../contexts/Table/travel'
 import TravelModal from '../../components/modals/travel/TravelModal'
@@ -30,7 +31,7 @@ export default function Travel() {
                         <Dialog.Root open={open} onOpenChange={setOpen}>
                             <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-gray-900 rounded-md hover:bg-gray-600 hover:outline-none">
                                 <div className='flex items-center  gap-2'>
-                                    <MdAddCircleOutline
+                                    <IoMdAdd
                                         className=" h-5 w-5 text-white"
                                         aria-hidden="true"
                                     />
