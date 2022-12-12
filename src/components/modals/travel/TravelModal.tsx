@@ -14,7 +14,7 @@ import ptBR from 'date-fns/locale/pt-BR'
 import MaskedInput from 'react-maskedinput'
 import { TravelContext } from '../../../contexts/Table/travel'
 import TravelModel from '../../../models/TravelModel'
-// import { getFirstDayOfMonth, getLastDayOfMonth } from '../../../utils/formatData'
+import { getFirstDayOfMonth, getLastDayOfMonth } from '../../../utils/formatData'
 registerLocale('ptBR', ptBR)
 
 
@@ -38,21 +38,6 @@ function textTransform(type: string) {
             break;
     }
 }
-
-// function valdiateDate(date: Date) {
-//     let firstDayOfMonth = getFirstDayOfMonth()
-//     let lastDayOfMonth = getLastDayOfMonth(new Date())
-
-//     if (date >= firstDayOfMonth && date <= lastDayOfMonth) {
-//         return true
-//     }
-//     else {
-//         return false
-
-//     }
-// }
-
-
 
 export default function TravelModal({ travel, setOpen }: propsModal) {
     const { routes } = useContext(RouteContext)
@@ -141,6 +126,7 @@ export default function TravelModal({ travel, setOpen }: propsModal) {
                 date: date.toISOString(),
                 id: travel?.id
             }
+
             //@ts-ignore
             handleSubmit(data)
 
@@ -261,6 +247,8 @@ export default function TravelModal({ travel, setOpen }: propsModal) {
                                             className='input-mask w-full px-3 py-2 placeholder-gray-700 border border-gray-700 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-white dark:text-gray-700 dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500'
                                             locale={ptBR}
                                             selected={date}
+                                            minDate={getFirstDayOfMonth()}
+                                            maxDate={getLastDayOfMonth()}
                                             onChange={(date: Date) => setDate(date)}
                                             dateFormat="dd/MM/yyyy"
                                             customInput={
@@ -268,8 +256,6 @@ export default function TravelModal({ travel, setOpen }: propsModal) {
                                             }
                                         />
                                         {!date ? <p className='text-red-500 text-xs mt-2'>Data é obrigatória!</p> : null}
-                                        {/* {showError ? <p className='text-red-500 text-xs mt-2'>Só pode registrar viagens no mês recorrente!</p> : null} */}
-
                                     </div>
                                 </div>
 
