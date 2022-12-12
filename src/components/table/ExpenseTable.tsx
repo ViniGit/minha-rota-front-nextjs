@@ -5,8 +5,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { BsTrash } from 'react-icons/bs'
 import { FiEdit } from 'react-icons/fi'
 import { GoAlert } from 'react-icons/go'
-import VehicleModal from "../modals/vehicle/VehicleModal"
-import Pagination from "./expense/pagination"
+import Pagination from "./pagination"
 import { ExpenseContext } from "../../contexts/Table/expense"
 import ExpenseModel from "../../models/ExpenseModel"
 import ExpenseModal from "../modals/expense/ExpenseModal"
@@ -101,6 +100,8 @@ function ExpenseTable() {
                         totalCountRegisters={count}
                         currentPage={pageR}
                         onPageChange={setPage}
+                        // @ts-ignore
+                        modelContext={ExpenseContext}
                     />
                 </div>
 

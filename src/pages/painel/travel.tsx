@@ -28,7 +28,7 @@ export default function Travel() {
                 <div className='p-8 w-full content-center'>
                     <div className=" relative m-2 flex w-11/12 justify-end mx-auto mb-5">
                         <Dialog.Root open={open} onOpenChange={setOpen}>
-                            <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-blue-500 rounded-md focus:bg-blue-600 focus:outline-none">
+                            <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-gray-900 rounded-md hover:bg-gray-600 hover:outline-none">
                                 <div className='flex items-center  gap-2'>
                                     <MdAddCircleOutline
                                         className=" h-5 w-5 text-white"

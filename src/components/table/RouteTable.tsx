@@ -12,7 +12,7 @@ import UserModel from "../../models/RouteModel"
 import { api } from "../../services/apiClient"
 import RouteModal from "../modals/route/RouteModal"
 import RouteModel from "../../models/RouteModel"
-import Pagination from "./route/pagination"
+import Pagination from "./pagination"
 
 
 function RouteTable() {
@@ -87,6 +87,8 @@ function RouteTable() {
                         totalCountRegisters={count}
                         currentPage={pageR}
                         onPageChange={setPage}
+                        // @ts-ignore
+                        modelContext={RouteContext}
                     />
                 </div>
 

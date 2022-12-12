@@ -12,7 +12,7 @@ import { ToastifySuccess } from "../../../toastify/toastify-succes"
 //     price: number
 // }
 
-interface TravelContextData {
+export interface TravelContextData {
     search(type?: searchPros): Promise<void>
     handleDelete(page: TravelModel): Promise<void>
     setTravelEdit(travel: TravelModel): Promise<void>

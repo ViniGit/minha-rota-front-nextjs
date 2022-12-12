@@ -8,7 +8,7 @@ import { GoAlert } from 'react-icons/go'
 import VehicleModal from "../modals/vehicle/VehicleModal"
 import VehicleModel from "../../models/VehicleModel"
 import { VehicleContext } from "../../contexts/Table/vehicle"
-import Pagination from "./vehicle/pagination"
+import Pagination from "./pagination"
 
 function VehicleTable() {
     const [page, setPage] = useState(1)
@@ -92,6 +92,8 @@ function VehicleTable() {
                         totalCountRegisters={count}
                         currentPage={pageR}
                         onPageChange={setPage}
+                        // @ts-ignore
+                        modelContext={VehicleContext}
                     />
                 </div>
 

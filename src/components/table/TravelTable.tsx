@@ -6,9 +6,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { BsTrash } from 'react-icons/bs'
 import { FiEdit } from 'react-icons/fi'
 import { GoAlert } from 'react-icons/go'
-import RouteModal from "../modals/route/RouteModal"
-import RouteModel from "../../models/RouteModel"
-import Pagination from "./travel/pagination"
+import Pagination from "./pagination"
 import { TravelContext } from "../../contexts/Table/travel"
 import TravelModal from "../modals/travel/TravelModal"
 import TravelModel from "../../models/TravelModel"
@@ -110,6 +108,8 @@ function TravelTable() {
                         totalCountRegisters={count}
                         currentPage={pageR}
                         onPageChange={setPage}
+                        // @ts-ignore
+                        modelContext={TravelContext}
                     />
                 </div>
 

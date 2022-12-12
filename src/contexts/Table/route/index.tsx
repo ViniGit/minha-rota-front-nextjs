@@ -11,7 +11,7 @@ interface RoutesProps {
     price: number
 }
 
-interface RouteContextData {
+export interface RouteContextData {
     search(type?: searchPros): Promise<void>
     handleDelete(page: RoutesProps): Promise<void>
     setRouteEdit(route: RoutesProps): Promise<void>

@@ -1,20 +1,21 @@
 import { useContext, useState } from "react"
-import { TravelContext } from "../../../../contexts/Table/travel"
-import { VehicleContext } from "../../../../contexts/Table/vehicle"
+import { RouteContextData } from "../../../contexts/Table/route"
+import { TravelContextData } from "../../../contexts/Table/travel"
 
 interface PaginationItemProps {
     number: number,
     isCurrent?: boolean,
     skip?: number,
-    onPageChange: (page: number) => void
+    onPageChange: (page: number) => void,
+    modelContext: RouteContextData | TravelContextData
 }
 
-function PaginationItem({ isCurrent = false, number, onPageChange }: PaginationItemProps) {
+function PaginationItem({ isCurrent = false, number, onPageChange, modelContext }: PaginationItemProps) {
     const [active, setActive] = useState(true)
     const [take, setTake] = useState<Number>(5)
-    // const [skip, setSkip] = useState(0)
 
-    const { search, type, page, pageR } = useContext(TravelContext)
+    // @ts-ignore
+    const { search, type, page, pageR } = useContext(modelContext)
 
     async function next() {
         await page(number)
