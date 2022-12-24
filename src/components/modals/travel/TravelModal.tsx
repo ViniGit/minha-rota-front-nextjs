@@ -1,7 +1,7 @@
 import { ToastContainer } from 'react-toastify'
 import * as Dialog from '@radix-ui/react-dialog'
 import RouteModel from '../../../models/RouteModel'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect, useCallback } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { RouteContext } from '../../../contexts/Table/route'
@@ -41,13 +41,16 @@ function textTransform(type: string) {
 
 export default function TravelModal({ travel, setOpen }: propsModal) {
     const { routes } = useContext(RouteContext)
-    const { search } = useContext(TravelContext)
+    const { search, lastTravel } = useContext(TravelContext)
     const { vehicles } = useContext(VehicleContext)
-
-    console.log('vehicles')
-    console.log(vehicles)
-
     const [date, setDate] = useState(new Date())
+
+    
+    useEffect(() => {
+        // @ts-ignore
+        setDate(travel?.date || new Date())
+    }, [travel?.id])
+
 
     async function handleCreate(data: TravelModel) {
         try {
@@ -104,10 +107,10 @@ export default function TravelModal({ travel, setOpen }: propsModal) {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            description: travel?.description,
-            travels: travel?.travels || 2,
-            route: travel?.route.id,
-            vehicle: travel?.vehicle.id,
+            description: travel?.description || '',
+            travels: travel?.travels ? travel?.travels : lastTravel && lastTravel.travels ? lastTravel.travels : 1,
+            route: travel?.route.id ? travel?.route.id : lastTravel && lastTravel.route_id ? lastTravel.route_id : '',
+            vehicle: travel?.vehicle.id ? travel?.vehicle.id : lastTravel && lastTravel.vehicle_id ? lastTravel.vehicle_id : '',
         },
         validationSchema: Yup.object({
             vehicle: Yup.string().required('Veículo é obrigatório'),

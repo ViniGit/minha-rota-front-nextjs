@@ -18,7 +18,6 @@ import TravelTable from '../../components/table/TravelTable'
 export default function Travel() {
 
     const [open, setOpen] = useState(false)
-    console.log(open)
 
     return (
         <TravelProvider>

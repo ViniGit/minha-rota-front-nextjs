@@ -38,6 +38,8 @@ function TravelTable() {
     let { travels, count, pageR, handleDelete } = useContext(TravelContext)
 
     function handleOpenModal(travel: TravelModel) {
+        // @ts-ignore
+        travel.date = new Date(travel?.date)
         setTravelModel(travel)
         setOpen(false)
     }
@@ -49,11 +51,11 @@ function TravelTable() {
                     <table className='bg-white w-full rounded-2xl'>
                         <thead >
                             <tr className="">
-                                <th className="p-4 dark:bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Viagem</th>
-                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Veículo</th>
-                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Trajeto</th>
-                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Data</th>
-                                <th className="p-4 dark:bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Ações</th>
+                                <th className="p-4 bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Qtd. de Viagens</th>
+                                <th className="p-4 bg-gray-900 text-white text-lg font-bold">Veículo</th>
+                                <th className="p-4 bg-gray-900 text-white text-lg font-bold">Trajeto</th>
+                                <th className="p-4 bg-gray-900 text-white text-lg font-bold">Data</th>
+                                <th className="p-4 bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Ações</th>
                             </tr>
                         </thead>
                         <tbody className="text-center">
@@ -63,14 +65,14 @@ function TravelTable() {
 
                                         {index % 2 == 0 ? <>
                                             {/* <td title={travel.description} className='text-gray-400 px-8 py-4 font-bold'>{travel.description}</td> */}
-                                            <td className='text-gray-400 px-8 py-4 font-bold'>{travel.id}</td>
+                                            <td className='text-gray-400 px-8 py-4 font-bold'>{String(travel.travels)}</td>
                                             <td className='text-gray-400 px-8 py-4 font-bold'>{textTransform(travel.vehicle.type)}</td>
                                             <td className='text-gray-400 px-8 py-4 font-bold'>{travel.route.destination}</td>
                                             <td className='text-gray-400 px-8 py-4 font-bold'>{format(travel.date)}</td>
 
                                         </> :
                                             <>
-                                                <td className='text-gray-400 px-8 py-4 font-bold'>{travel.id}</td>
+                                                <td className='text-gray-400 px-8 py-4 font-bold'>{String(travel.travels)}</td>
                                                 <td className='text-gray-400 px-8 py-4 font-bold'>{textTransform(travel.vehicle.type)}</td>
                                                 <td className='text-gray-400 px-8 py-4 font-bold'>{travel.route.destination}</td>
                                                 <td className='text-gray-400 px-8 py-4 font-bold'>{format(travel.date)}</td>

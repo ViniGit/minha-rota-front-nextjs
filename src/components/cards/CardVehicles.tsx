@@ -10,7 +10,7 @@ export default function CardVehicles() {
     return (
         <>
             <Link href="/painel/vehicle">
-                <div className="flex justify-center p-6 max-w-xs md:w-full  bg-gray-900 rounded-lg border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-800 hover:scale-110  hover:cursor-pointer">
+                <div className="flex justify-center p-6 md:w-full  bg-gray-900 rounded-lg border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-800 hover:scale-110  hover:cursor-pointer">
                     <div className="flex justify-center">
                         <GiCityCar
                             className=" h-10 w-10 m-3 text-white"
@@ -23,5 +23,5 @@ export default function CardVehicles() {
             </Link>
 
         </>
-    );
+    )
 }

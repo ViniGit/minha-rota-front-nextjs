@@ -45,10 +45,10 @@ function VehicleTable() {
                     <table className='bg-white w-full rounded-2xl'>
                         <thead >
                             <tr className="">
-                                <th className="p-4 dark:bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Placa</th>
-                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Tipo</th>
-                                <th className="p-4 dark:bg-gray-900 text-white text-lg font-bold">Quilômetros por litro</th>
-                                <th className="p-4 dark:bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Ações</th>
+                                <th className="p-4 bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Placa</th>
+                                <th className="p-4 bg-gray-900 text-white text-lg font-bold">Tipo</th>
+                                <th className="p-4 bg-gray-900 text-white text-lg font-bold">Quilômetros por litro</th>
+                                <th className="p-4 bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Ações</th>
                             </tr>
                         </thead>
                         <tbody className="text-center">

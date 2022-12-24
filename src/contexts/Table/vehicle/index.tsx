@@ -49,7 +49,6 @@ export function VehicleProvider({ children }: VehicleProviderProps) {
             }
         )
             .then(response => {
-                console.log(response.data.count)
                 setVehicles(response.data.vehicle)
                 setCount(response.data.count)
             })
@@ -70,7 +69,6 @@ export function VehicleProvider({ children }: VehicleProviderProps) {
         if (value) {
             await api.delete("/vehicle", { params: { id: vehicle.id } })
                 .then(response => {
-                    console.log(response)
                     if (response.status == 200)
                         ToastifySuccess('Veículo excluído!')
                 }).catch(err => {
@@ -83,7 +81,6 @@ export function VehicleProvider({ children }: VehicleProviderProps) {
     }
 
     async function setVehicleEdit(vehicle: VehicleProps) {
-        console.log(vehicle)
         setVehicle(vehicle)
 
     }

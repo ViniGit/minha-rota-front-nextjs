@@ -50,8 +50,6 @@ export function ExpenseProvider({ children }: ExpenseProviderProps) {
             }
         )
             .then(response => {
-                console.log(response.data.count)
-                console.log(response.data.expense)
                 setExpenses(response.data.expense)
                 setCount(response.data.count)
             })
@@ -72,7 +70,6 @@ export function ExpenseProvider({ children }: ExpenseProviderProps) {
         if (value) {
             await api.delete("/expense", { params: { id: expense.id } })
                 .then(response => {
-                    console.log(response)
                     if (response.status == 200)
                         ToastifySuccess('Despesa excluído!')
                 }).catch(err => {
@@ -85,7 +82,6 @@ export function ExpenseProvider({ children }: ExpenseProviderProps) {
     }
 
     async function setExpenseEdit(expense: ExpenseProps) {
-        console.log(expense)
         setExpense(expense)
 
     }

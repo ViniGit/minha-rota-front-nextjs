@@ -28,7 +28,6 @@ export default function ExpenseModal({ expense, setOpen }: propsModal) {
 
     const { search } = useContext(ExpenseContext)
     const { routes } = useContext(RouteContext)
-    console.log(expense)
 
     async function handleCreate(data: ExpenseModel) {
         try {
@@ -53,7 +52,6 @@ export default function ExpenseModal({ expense, setOpen }: propsModal) {
     }
 
     async function handleUpdate(data: ExpenseModel) {
-        console.log(data)
         try {
             await api.put(`/expense/${data.id}`, data).then(response => {
                 if (response.status === 201) {

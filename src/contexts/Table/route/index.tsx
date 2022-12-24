@@ -69,7 +69,6 @@ export function RouteProvider({ children }: RouteProvaiderProps) {
         if (value) {
             await api.delete("/route", { params: { id: route.id } })
                 .then(response => {
-                    console.log(response)
                     if (response.status == 200)
                         ToastifySuccess('Trajeto excluído!')
                 }).catch(err => {
@@ -82,7 +81,6 @@ export function RouteProvider({ children }: RouteProvaiderProps) {
     }
 
     async function setRouteEdit(route: RoutesProps) {
-        console.log(route)
         setRoute(route)
 
     }

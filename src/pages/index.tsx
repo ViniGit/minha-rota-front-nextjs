@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import { useContext, useState } from 'react'
-import { FiLogIn } from 'react-icons/fi'
 import { Authcontext } from '../contexts/AuthContext'
-import styles from '../styles/login.module.scss'
 import { withSSRGuest } from '../utils/withSSRGuest'
 import { ToastContainer } from 'react-toastify'
 import { useFormik } from 'formik'
@@ -34,7 +32,6 @@ export default function Login() {
         email: values.email,
         password: values.password,
       }
-      console.log(data)
       signIn(data)
 
     },
@@ -77,7 +74,7 @@ export default function Login() {
                     </div>
                   </Dialog.Trigger>
                   <ForgotPassword open={open} setOpen={setOpen} />
-                </Dialog.Root>  
+                </Dialog.Root>
                 <p className="text-sm text-center text-gray-400">Não possui acesso? <a href="/sign-up" className="text-red-400 focus:outline-none focus:underline focus:text-red-500 dark:focus:border-red-800">Cadastre-se</a>.</p>
               </form>
             </div>

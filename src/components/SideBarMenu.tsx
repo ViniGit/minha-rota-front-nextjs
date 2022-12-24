@@ -1,16 +1,10 @@
 import { Disclosure } from "@headlessui/react"
-import { GiCityCar, GiHamburgerMenu, GiPathDistance, GiTakeMyMoney } from 'react-icons/gi'
+import { GiCityCar, GiPathDistance, GiTakeMyMoney } from 'react-icons/gi'
 import {
     MdOutlineSpaceDashboard,
-    MdOutlineAnalytics,
-    MdOutlineIntegrationInstructions,
-    MdOutlineMoreHoriz,
-    MdOutlineSettings,
-    MdOutlineLogout,
 } from "react-icons/md"
-import { CgProfile } from "react-icons/cg"
-import { FaMapMarkedAlt, FaRegComments } from "react-icons/fa"
-import { BiMessageSquareDots } from "react-icons/bi"
+import { TbReportAnalytics } from "react-icons/tb"
+import { FaMapMarkedAlt } from "react-icons/fa"
 import { Authcontext } from "../contexts/AuthContext"
 import Link from "next/link"
 import { useContext } from "react"
@@ -84,6 +78,15 @@ function MyApp() {
                                     <FaMapMarkedAlt className="text-2xl text-white group-hover:text-red-500 " />
                                     <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
                                         Viagens
+                                    </h3>
+                                </div>
+                            </Link>
+
+                            <Link href="/painel/report/expense">
+                                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-800 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                                    <TbReportAnalytics className="text-2xl text-white group-hover:text-red-500 " />
+                                    <h3 className="text-base text-white group-hover:text-red-500 font-semibold ">
+                                        Relatórios
                                     </h3>
                                 </div>
                             </Link>

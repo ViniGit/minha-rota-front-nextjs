@@ -99,7 +99,6 @@ export default function Account() {
 
             try {
                 api.put(`/users/${activeUser?.id}`, data).then(response => {
-                    console.log(response.data)
                     if (response.status === 201) {
                         ToastifySuccess('Usuário atualizado!')
                         setTimeout(() => {

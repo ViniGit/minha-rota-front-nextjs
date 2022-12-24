@@ -170,7 +170,6 @@ export default function RouteModal({ route, setOpen }: propsModal) {
                                             value={formik.values.price}
                                             onBlur={formik.handleBlur}
                                             onValueChange={(value, name) => {
-                                                // console.log()
                                                 if (!value)
                                                     formik.setFieldValue('price', '')
                                                 else

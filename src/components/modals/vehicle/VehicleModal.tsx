@@ -49,7 +49,6 @@ export default function VehicleModal({ vehicle, setOpen }: propsModal) {
     }
 
     async function handleUpdate(data: VehicleModel) {
-        console.log(data)
         try {
             await api.put(`/vehicle/${data.id}`, data).then(response => {
                 if (response.status === 201) {
