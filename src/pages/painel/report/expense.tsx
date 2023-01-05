@@ -18,6 +18,8 @@ import ExpenseTable from '../../../components/table/ExpenseTable'
 import { ToastContainer } from 'react-toastify'
 import ReportExpenseTable from '../../../components/table/ReportExpenseTable'
 import { ReportExpenseContext } from '../../../contexts/Table/expense/report'
+import { TbFileSpreadsheet } from 'react-icons/tb'
+import { RiAlertFill } from 'react-icons/ri'
 
 registerLocale('ptBR', ptBR)
 
@@ -35,39 +37,8 @@ export default function ReportExpense() {
     const [typeExpense, setTypeExpense] = useState('')
     const [open, setOpen] = useState(false)
 
-    let { handleRequest } = useContext(ReportExpenseContext)
 
-
-    // function handleRequest(data: IRequest) {
-    //     try {
-    //         api.get(`/expense/report/${data.startDate}/${data.finaltDate}/${data.type}`).then(response => {
-    //             if (response.status === 201) {
-    //                 console.log(response.data)
-    //             }
-    //         }).catch((err) => {
-    //             console.log(err)
-    //             if (err.response && err.response.data && err.response.data.message && err.response.data.statusCode == 400)
-    //                 return ToastifyError(err.response.data.message)
-    //             else
-    //                 return ToastifyError('Erro interno do servidor')
-    //         })
-    //     } catch (error) {
-    //         ToastifyError('Erro interno do servidor')
-    //         console.warn(error)
-    //     }
-    // }
-
-    // useEffect(() => {
-
-    //     let data = {
-    //         type: '',
-    //         startDate: getFirstDayOfMonth(),
-    //         finaltDate: getLastDayOfMonth()
-    //     }
-
-    //     handleRequest(data)
-
-    // }, [])
+    let { handleRequest, exportXls } = useContext(ReportExpenseContext)
 
     function handleSubmit(e: React.FormEvent<HTMLInputElement>) {
         e.preventDefault()
@@ -91,7 +62,7 @@ export default function ReportExpense() {
                 <div className="relative flex w-11/12 flex-col min-w-0 break-words mb-6 shadow-lg rounded-xl border-0 bg-dark bg-white mx-auto mt-10">
                     <div className="rounded-t bg-white px-6 py-2 mt-2">
                         <div className="text-center flex justify-between">
-                            <h6 className="text-blueGray-700 text-2xl font-light text-dark ml-2">Relatório de despesas</h6>
+                            <h6 className="text-blueGray-700 text-2xl font-semibold text-dark ml-2">Relatório de despesas</h6>
                         </div>
                     </div>
                     <div className="flex-auto px-2 lg:px-10 py-2 pt-0">
@@ -193,27 +164,26 @@ export default function ReportExpense() {
 
             <div className="p-2 pt-4 w-full">
                 <div className=' w-full content-center'>
-                    {/* <div className=" relative m-2 flex w-11/12 justify-end mx-auto mb-5">
-                        <Dialog.Root open={open} onOpenChange={setOpen}>
-                            <Dialog.Trigger className="px-3 py-4 text-white text-base font-semibold bg-gray-900 rounded-md hover:bg-gray-600 hover:outline-none">
-                                <div className='flex items-center  gap-2'>
-                                    <IoMdAdd
-                                        className=" h-5 w-5 text-white"
-                                        aria-hidden="true"
-                                    />
-                                    <p className='font-semibold' >Cadastrar Despesa</p>
-                                </div>
-                            </Dialog.Trigger>
-                            <RouteProvider>
-                                <ExpenseModal setOpen={setOpen} />
-                            </RouteProvider>
-                        </Dialog.Root>
-                    </div> */}
+                    <div className="rounded-t mb-0 px-16 m-2">
+                        <div className="text-center flex justify-start ">
+                            {/* onClick={() => handleOpenModal(expense) */}
+                            <div className='flex hover:cursor-pointer' onClick={()=> exportXls()}>
+                                <TbFileSpreadsheet className="text-2xl text-gray-800" />
+                                <h6 className="text-blueGray-700 text-lg text-gray-800 font-light  ml-2">Exportar Planilha (.xls)</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="p-2 pt-4 w-full">
+                <div className=' w-full content-center'>
                     <div className="relative flex w-11/12 flex-col min-w-0 break-words mb-6 shadow-lg rounded-xl border-0 bg-dark bg-white mx-auto mt-2">
                         <div className="rounded-t bg-white mb-0 px-6 py-6 mt-3">
+                            {/* <div className="text-center flex justify-end m-5" title='Para visualizar todos os resultados do filtro, realize a exportação do relatório!'>
+                                <RiAlertFill className="text-2xl text-yellow-300 shadow-2xl" />
+                            </div> */}
                             <div className="text-center flex justify-between">
-                                <h6 className="text-blueGray-700 text-2xl font-semibold text-dark ml-2">Despesas</h6>
-
+                                <h6 className="text-blueGray-700 text-xl font-light text-dark ml-2">Despesas</h6>
                             </div>
                         </div>
                         {/* table vehicle pagination */}

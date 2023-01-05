@@ -2,9 +2,11 @@ import { createContext, useEffect, useState } from "react"
 import { api } from "../../../../services/apiClient"
 import { ToastifyError } from "../../../../toastify/toastify-error"
 import { ToastifySuccess } from "../../../../toastify/toastify-succes"
-import { getFirstDayOfMonth, getLastDayOfMonth } from "../../../../utils/formatData"
+import { format, getFirstDayOfMonth, getLastDayOfMonth } from "../../../../utils/formatData"
 
 
+import XLSX from 'sheetjs-style'
+import { typeExpenseTransform } from "../../../../utils/Expense"
 
 interface ReportProps {
     id: string
@@ -19,6 +21,7 @@ interface ExpenseContextData {
     search(type?: searchPros): Promise<void>
     handleRequest(page: IRequest): Promise<void>
     page(page: number): Promise<void>
+    exportXls(): Promise<void>
     expenseReport: ReportProps[]
     totalValue: number
     count: number,
@@ -83,30 +86,6 @@ export function ExpenseProvider({ children }: ExpenseProviderProps) {
 
     }, [])
 
-
-    // async function handleDelete(expense: ReportProps) {
-    //     let value = false
-
-    //     if (confirm("Confirmar Exclusão?") == true) {
-    //         value = true
-    //     } else {
-    //         value = false
-    //     }
-
-    //     if (value) {
-    //         await api.delete("/expense", { params: { id: expense.id } })
-    //             .then(response => {
-    //                 if (response.status == 200)
-    //                     ToastifySuccess('Despesa excluído!')
-    //             }).catch(err => {
-    //                 console.log(err)
-    //             })
-
-    //         search({ pageR: 0, take: 5 })
-
-    //     }
-    // }
-
     async function search({ take = 5, pageR = 0 }: searchPros) {
         const response = await api.get("/expense", {
             params: {
@@ -119,12 +98,71 @@ export function ExpenseProvider({ children }: ExpenseProviderProps) {
 
     }
 
+
+
+    function formatDataToExport() {
+        var arrayToExport = [['Descrição', 'Tipo', 'Data', 'Valor']]
+        for (const expense of expenseReport) {
+            // build rows
+            var expenseValue = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(expense.value)
+
+            var expenseType = typeExpenseTransform(expense.type) as string
+
+            arrayToExport.push([expense.description, expenseType, format(expense.created_at), expenseValue])
+        }
+        var total = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(totalValue)
+
+        // total value
+        arrayToExport.push(['', '', 'Total:', total])
+
+        return arrayToExport
+
+    }
+
+
+    async function exportXls() {
+        console.log(expenseReport)
+        debugger
+        if (expenseReport && expenseReport.length > 0) {
+
+            var workbook = XLSX.utils.book_new()
+
+            var arrayExport = formatDataToExport()
+
+            var ws = XLSX.utils.json_to_sheet(arrayExport, { skipHeader: true })
+
+            var styleHeader = {
+                font: {
+                    name: 'arial',
+                    bold: true,
+                    color: "#F2F2F2"
+                },
+            }
+            ws['A1'].s = styleHeader
+            ws['B1'].s = styleHeader
+            ws['C1'].s = styleHeader
+            ws['D1'].s = styleHeader
+
+            const fileName = "Relatório-Despesas"
+
+            XLSX.utils.book_append_sheet(workbook, ws, fileName)
+            XLSX.writeFile(workbook, fileName + '.xlsx')
+
+        }
+    }
+
     async function page(page: number) {
         setPageR(page)
     }
 
     return (
-        <ReportExpenseContext.Provider value={{ search, handleRequest, page, expenseReport, totalValue, count, pageR }}>
+        <ReportExpenseContext.Provider value={{ search, handleRequest, page, exportXls, expenseReport, totalValue, count, pageR }}>
             {children}
         </ReportExpenseContext.Provider>
     )

@@ -37,8 +37,8 @@ export default function VehicleModal({ vehicle, setOpen }: propsModal) {
                 }
             }).catch((err) => {
                 console.log(err)
-                if (err.response && err.response.data && err.response.data.message && err.response.data.statusCode == 400)
-                    return ToastifyError(err.response.data.message)
+                if (err.response && err.response.data && err.response.data.message && err.response.data.statusCode == 400 && err.response.data.message == 'Vehicle already exists')
+                    return ToastifyError('Já existe um veículo com essa placa cadastrado!')
                 else
                     return ToastifyError('Erro interno do servidor')
             })

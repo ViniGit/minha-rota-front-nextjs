@@ -74,7 +74,7 @@ export default function Reset() {
       <Head>
         <title>Login | Esqueci minha senha</title>
       </Head>
-      <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">
+      <div className="flex items-center min-h-screen bg-gray-900">
         <div className="container mx-auto">
           <div className="max-w-md mx-auto my-10">
             <a className="back-link" href="/">
@@ -82,7 +82,7 @@ export default function Reset() {
               <p className="text-base text-white">Voltar</p>
             </a>
             <div className="text-center mt-10">
-              <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">Nova senha</h1>
+              <h1 className="my-3 text-3xl font-semibold text-gray-200">Nova senha</h1>
             </div>
             <div className="m-7">
               <form onSubmit={formik.handleSubmit}>
@@ -93,14 +93,14 @@ export default function Reset() {
                 </div> */}
 
                 <div className="mb-6">
-                  <label className="block mb-2 text-sm text-gray-600 dark:text-gray-400">Senha</label>
-                  <input type="password" name="password" id="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                  <label className="block mb-2 text-sm text-gray-200">Senha</label>
+                  <input type="password" name="password" id="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-500 border border-gray-900 rounded-md focus:outline-none focus:ring bg-gray-700 dark:text-white  dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
                   {formik.touched.password && formik.errors.password ? <p className="text-red-500 py-2">{formik.errors.password}</p> : null}
                 </div>
 
                 <div className="mb-6">
-                  <label className="block mb-2 text-sm text-gray-600 dark:text-gray-400">Confirmação de senha</label>
-                  <input type="password" name="confirmPassword" id="confirmPassword" value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-red-100 focus:border-red-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
+                  <label className="block mb-2 text-sm text-gray-200">Confirmação de senha</label>
+                  <input type="password" name="confirmPassword" id="confirmPassword" value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full px-3 py-2 placeholder-gray-500 border border-gray-900 rounded-md focus:outline-none focus:ring  bg-gray-700 text-white  dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
                   {formik.touched.confirmPassword && formik.errors.confirmPassword ? <p className="text-red-500 py-2">{formik.errors.confirmPassword}</p> : null}
                 </div>
                 <div className="">

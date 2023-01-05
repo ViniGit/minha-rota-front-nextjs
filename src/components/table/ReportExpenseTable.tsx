@@ -12,6 +12,7 @@ import ExpenseModal from "../modals/expense/ExpenseModal"
 import { RouteProvider } from "../../contexts/Table/route"
 import { ReportExpenseContext } from "../../contexts/Table/expense/report"
 import { format } from "../../utils/formatData"
+import { typeExpenseTransform } from "../../utils/Expense"
 
 function ReportExpenseTable() {
     const [page, setPage] = useState(1)
@@ -31,34 +32,17 @@ function ReportExpenseTable() {
     // }
 
 
-    function textTransform(type: string) {
-        switch (type) {
-            case 'mechanics':
-                return 'Mecânica'
-            case 'driver':
-                return 'Motorista'
-            case 'fuel':
-                return 'Combustível'
-            case 'other':
-                return 'Outro'
-
-            default:
-                break;
-        }
-
-    }
-
     return (
         <>
             {expenseReport && expenseReport.length > 0 ?
-                <div className="2xl:w-[1200px] xl:w-[900px] md:w-[800px] sm-[600px] test:w-[200px] mx-auto test:m-0 test:mt-4 p-10">
-                    <table className='bg-white w-full rounded-2xl'>
+                <div className="2xl:w-[1200px] xl:w-[900px] md:w-[800px] sm-[600px] test:w-[200px] mx-auto test:m-0 test:mt-4 p-2">
+                    <table className='bg-white w-full rounded-2xl mb-5'>
                         <thead >
                             <tr className="">
-                                <th className="p-4 bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Descrição</th>
-                                <th className="p-4 bg-gray-900 text-white text-lg font-bold">Tipo</th>
-                                <th className="p-4 bg-gray-900 text-white text-lg font-bold">Data</th>
-                                <th className="p-4 bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Valor</th>
+                                <th className="p-2 bg-gray-900 rounded-tl-xl text-white text-lg font-bold">Descrição</th>
+                                <th className="p-2 bg-gray-900 text-white text-lg font-bold">Tipo</th>
+                                <th className="p-2 bg-gray-900 text-white text-lg font-bold">Data</th>
+                                <th className="p-2 bg-gray-900 rounded-tr-xl text-white text-lg font-bold">Valor</th>
                             </tr>
                         </thead>
                         <tbody className="text-center">
@@ -67,19 +51,19 @@ function ReportExpenseTable() {
                                     <tr key={expense.id} className={index % 2 == 0 ? "border-t-2 border-b-2" : "border-t-2 border-b-2 bg-gray-200"}>
 
                                         {index % 2 == 0 ? <>
-                                            <td title="Descrição" className='text-gray-400 px-8 py-4 font-bold'>{expense.description}</td>
-                                            <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{textTransform(expense.type)}</td>
-                                            <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{format(expense.created_at)}</td>
-                                            <td title="Valor" className='text-gray-400 px-6 py-4 font-bold'>{new Intl.NumberFormat('pt-BR', {
+                                            <td title="Descrição" className='text-gray-400 px-4 py-2 font-bold'>{expense.description}</td>
+                                            <td title="Tipo" className='text-gray-400 px-3 py-2 font-bold'>{typeExpenseTransform(expense.type)}</td>
+                                            <td title="Data" className='text-gray-400 px-3 py-2 font-bold'>{format(expense.created_at)}</td>
+                                            <td title="Valor" className='text-gray-400 px-3 py-2 font-bold'>{new Intl.NumberFormat('pt-BR', {
                                                 style: 'currency',
                                                 currency: 'BRL'
                                             }).format(expense.value)}</td>
                                         </> :
                                             <>
-                                                <td title="Descrição" className='text-gray-400 px-8 py-4 font-bold'>{expense.description}</td>
-                                                <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{textTransform(expense.type)}</td>
-                                                <td title="Tipo" className='text-gray-400 px-6 py-4 font-bold'>{format(expense.created_at)}</td>
-                                                <td title="Valor" className='text-gray-400 px-6 py-4 font-bold'>{new Intl.NumberFormat('pt-BR', {
+                                                <td title="Descrição" className='text-gray-400 px-4 py-2 font-bold'>{expense.description}</td>
+                                                <td title="Tipo" className='text-gray-400 px-3 py-2 font-bold'>{typeExpenseTransform(expense.type)}</td>
+                                                <td title="Data" className='text-gray-400 px-3 py-2 font-bold'>{format(expense.created_at)}</td>
+                                                <td title="Valor" className='text-gray-400 px-3 py-2 font-bold'>{new Intl.NumberFormat('pt-BR', {
                                                     style: 'currency',
                                                     currency: 'BRL'
                                                 }).format(expense.value)}</td>
@@ -113,7 +97,7 @@ function ReportExpenseTable() {
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td className="text-gray-600 p-2 border-2 ">Total: {new Intl.NumberFormat('pt-BR', {
+                                <td className="border-t-2 border-2 text-gray-600 px-4 py-2 font-bold">Total: {new Intl.NumberFormat('pt-BR', {
                                     style: 'currency',
                                     currency: 'BRL'
                                 }).format(totalValue)}</td>

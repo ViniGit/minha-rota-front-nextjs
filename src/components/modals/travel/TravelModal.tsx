@@ -116,7 +116,7 @@ export default function TravelModal({ travel, setOpen }: propsModal) {
             vehicle: Yup.string().required('Veículo é obrigatório'),
             route: Yup.string().required('Trajeto é obrigatório'),
             travels: Yup.number().required('Qtd. de viagens é obrigatório'),
-            description: Yup.string().required('Descrição é obrigatória')
+            description: Yup.string()
         }),
         onSubmit: (values) => {
             if (!date) return
@@ -269,7 +269,8 @@ export default function TravelModal({ travel, setOpen }: propsModal) {
                                             className="block text-lg font-thin mb-2 text-gray-400"
                                             htmlFor="grid-password"
                                         >
-                                            Descrição<span className='text-red-500'>*</span>
+                                            Descrição
+                                            {/* <span className='text-red-500'>*</span> */}
                                         </label>
                                         <textarea
                                             id="description"
